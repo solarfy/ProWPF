@@ -1,0 +1,9 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/CustomControlLibrary;component/Themes/ColorPicker.xaml"/>
+        <ResourceDictionary Source="/CustomControlLibrary;component/Themes/FlipPanel.xaml"/>
+        <ResourceDictionary Source="/CustomControlLibrary;component/Themes/TileView.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+    
+</ResourceDictionary>

@@ -1,0 +1,153 @@
+﻿<Window x:Name="win" x:Class="ProWPF.ShapeAndAnimation.PolygonAndPolyline"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProWPF.ShapeAndAnimation"
+        xmlns:converters="clr-namespace:ProWPF.Converters"
+        mc:Ignorable="d"
+        Title="多边形和折线" Height="740" Width="800">
+    <Window.Resources>
+        <converters:CheckedToEnumConverter TargetEnum="{x:Type FillRule}" x:Key="CheckedToFillRuleConverter"/>
+
+        <Style x:Key="NormalPolyline" TargetType="{x:Type Polyline}">
+            <Setter Property="Stroke" Value="Blue"/>
+            <Setter Property="StrokeThickness" Value="14"/>
+            <Setter Property="Points" Value="10,30 60,0 90,40 120,10 350,10"/>
+        </Style>
+
+        <Style x:Key="MiterPolyline" TargetType="{x:Type Polyline}">
+            <Setter Property="Stroke" Value="Green"/>
+            <Setter Property="StrokeThickness" Value="14"/>
+            <Setter Property="Points" Value="10,40 60,0 90,40 120,10"/>
+        </Style>
+
+        <Style TargetType="RadioButton">
+            <Setter Property="Margin" Value="8,4"/>
+        </Style>
+
+        <DoubleCollection x:Key="Collection1">
+            1 2
+        </DoubleCollection>
+        
+        <DoubleCollection x:Key="Collection2">
+            2 1
+        </DoubleCollection>
+
+        <DoubleCollection x:Key="Collection3">
+            5 0.2 3 0.2
+        </DoubleCollection>
+
+        <DoubleCollection x:Key="Collection4">
+            3 0.5 2
+        </DoubleCollection>
+
+    </Window.Resources>
+    
+    <Grid Margin="4">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Background="#4CFFA500" Margin="4">
+            <GroupBox Header="填充规则" Margin="4">
+                <StackPanel Margin="4">
+                    <RadioButton IsChecked="{Binding ElementName=polygon, Path=FillRule, Converter={StaticResource CheckedToFillRuleConverter}, ConverterParameter=EvenOdd, Mode=TwoWay}">
+                        <TextBlock TextWrapping="Wrap">
+                            EvenOdd(默认) 计算到达形状的外部必须穿过的直线数量。如果是奇数，就填充；偶数，就不填充。
+                        </TextBlock>
+                    </RadioButton>
+                    <RadioButton IsChecked="{Binding ElementName=polygon, Path=FillRule, Converter={StaticResource CheckedToFillRuleConverter}, ConverterParameter=Nonzero, Mode=TwoWay}">
+                        <TextBlock TextWrapping="Wrap">
+                            Nonzero 在EvenOdd规则上，如果是偶数，计算经过的每条直线，在某个方向上直线的数量等于相反方向上直线的数量，就不填充区域，反之则填充。                        
+                           （所以Nonzero填充的区域总是大于等于EvenOdd填充的区域）
+                        </TextBlock>
+                    </RadioButton>
+                </StackPanel>
+            </GroupBox>
+        </Grid>
+        
+        <WrapPanel Grid.Row="1" Margin="4" Background="#4C008000">
+            <GroupBox Header="线段头尾两端线帽" Margin="4">
+                <StackPanel Orientation="Horizontal" ButtonBase.Click="LineCap_Click" Margin="4">
+                    <RadioButton IsChecked="True">Flat</RadioButton>
+                    <RadioButton>Square</RadioButton>
+                    <RadioButton>Round</RadioButton>
+                    <RadioButton>Triangle</RadioButton>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Header="线条连接" Margin="4">
+                <StackPanel Orientation="Horizontal" ButtonBase.Click="LineJoins_Click" Margin="4">
+                    <RadioButton>Bevel</RadioButton>
+                    <RadioButton>Round</RadioButton>
+                    <RadioButton IsChecked="True">Miter</RadioButton>
+                    <RadioButton>Miter With Limit of 3</RadioButton>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Header="点划线" Margin="4">
+                <WrapPanel Orientation="Horizontal" Margin="4" ButtonBase.Click="StrokeDashArray_Click">
+                    <TextBlock TextWrapping="Wrap" Margin="4">
+                        (1 2)表示线段长度值为1，空白长度值为2，这些值相对于直线宽度的，如果直线宽度为14，则线段长度为14，空白长度为28.
+                        <LineBreak/>
+                        当StrokeDashArray属性提供的数值个数为奇数时，如(3 0.5 2)，首先绘制3倍宽度长的实线，再绘制0.5倍宽的空白，再绘制2倍的实线，
+                        让后绘制3倍的空白，接着0.5倍的实线，依次类推。                        
+                    </TextBlock>
+                    <RadioButton Tag="Collection1">1 2</RadioButton>
+                    <RadioButton Tag="Collection2">2 1</RadioButton>
+                    <RadioButton Tag="Collection3">5 0.2 3 0.2</RadioButton>
+                    <RadioButton Tag="Collection4">3 0.5 2</RadioButton>
+                </WrapPanel>
+            </GroupBox>
+
+            <GroupBox Header="点划线线帽" Margin="4">
+                <StackPanel Orientation="Horizontal" Margin="4" ButtonBase.Click="StorkeDashCap_Click">
+                    <RadioButton IsChecked="True">Flat</RadioButton>
+                    <RadioButton>Square</RadioButton>
+                    <RadioButton>Round</RadioButton>
+                    <RadioButton>Triangle</RadioButton>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Header="点划线偏移（从0开始）" Margin="4">
+                <WrapPanel Orientation="Horizontal" Margin="4" ButtonBase.Click="StrokDashOffset_Click">
+                    <TextBlock TextWrapping="Wrap" Margin="4">
+                        指向StrokDashArray中某个索引值作为起始
+                        <LineBreak/>
+                        如StrokDashArray为(1 2)，设置为0时起始线段为1单位的实线，设置为1时起始线段为2单位的空白
+                    </TextBlock>
+                    <RadioButton IsChecked="True">0</RadioButton>
+                    <RadioButton>1</RadioButton>
+                    <RadioButton>2</RadioButton>
+                    <RadioButton>3</RadioButton>
+                </WrapPanel>
+            </GroupBox>
+
+            <GroupBox Header="像素对齐" Margin="4">
+                <WrapPanel Margin="4">
+                    <TextBlock TextWrapping="Wrap" Margin="4">
+                        设置为True时，告诉WPF不要为特定形状使用反锯齿特性进行处理，而会将尺寸舍入到最近的设备像素。
+                    </TextBlock>
+                    <CheckBox Margin="4" IsChecked="{Binding ElementName=win,Path=SnapsToDevicePixels, Mode=TwoWay}">SnapsToDeviceCheck</CheckBox>
+                </WrapPanel>
+            </GroupBox>
+        </WrapPanel>
+
+        <Canvas Grid.Column="1" Grid.RowSpan="2" ClipToBounds="True">
+            <Polygon x:Name="polygon" Stroke="Blue" StrokeThickness="1" Fill="Yellow" Canvas.Left="10" Canvas.Top="10"
+                 Points="15,200 68,70 110,200 0,125 135,125"/>
+
+            <Line X1="0" Y1="240" X2="0" Y2="440" Stroke="Red" Canvas.Left="15" Canvas.Top="0"/>
+            <Line X1="0" Y1="240" X2="0" Y2="440" Stroke="Red" Canvas.Left="360" Canvas.Top="0"/>
+           
+            <Polyline x:Name="polyline" Style="{StaticResource NormalPolyline}" Canvas.Left="10" Canvas.Top="310"/>
+        </Canvas>
+    </Grid>
+</Window>

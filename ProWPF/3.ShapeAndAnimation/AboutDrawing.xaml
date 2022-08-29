@@ -1,0 +1,214 @@
+﻿<Window x:Class="ProWPF.ShapeAndAnimation.AboutDrawing"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProWPF.ShapeAndAnimation"
+        mc:Ignorable="d"
+        Title="图画--无交互的轻量级图形" Height="600" Width="860">
+
+    <Window.Resources>
+        <ImageBrush x:Key="WinterBrush" ImageSource="pack://application:,,,/ProWPFResource;component/Images/winter.jpg"/>
+
+        <CombinedGeometry x:Key="KeyGeometry">
+            <CombinedGeometry.Geometry1>
+                <PathGeometry>
+                    <PathGeometry.Figures>
+                        M 85 300 V 0 H 115 V 300
+                        M 115 40 H 180 V 70 H 115
+                        M 115 110 H 180 V 140 H 115
+                    </PathGeometry.Figures>
+                </PathGeometry>
+            </CombinedGeometry.Geometry1>
+            <CombinedGeometry.Geometry2>
+                <CombinedGeometry GeometryCombineMode="Exclude">
+                    <CombinedGeometry.Geometry1>
+                        <EllipseGeometry RadiusX="80" RadiusY="80" Center="100 370"/>
+                    </CombinedGeometry.Geometry1>
+                    <CombinedGeometry.Geometry2>
+                        <EllipseGeometry RadiusX="50" RadiusY="50" Center="100 370"/>
+                    </CombinedGeometry.Geometry2>
+                </CombinedGeometry>
+            </CombinedGeometry.Geometry2>
+        </CombinedGeometry>
+    </Window.Resources>
+    
+    <TabControl>
+        <TabItem Header="图画类">
+            <Grid ShowGridLines="True">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Grid.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="TextWrapping" Value="Wrap"/>
+                        <Setter Property="Padding" Value="12,4"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                    </Style>
+                </Grid.Resources>
+
+                <TextBlock Margin="0,10" Text="图 画 类 (继承自Drawing类)" FontWeight="Bold" Grid.ColumnSpan="3" HorizontalAlignment="Center"/>
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="GeometryDrawing"/>
+                <TextBlock Grid.Row="1" Grid.Column="1">
+                    封装一个几何图形，该几何图形具有填充它的画刷和绘制其边框的画笔
+                </TextBlock>
+                <TextBlock Grid.Row="1" Grid.Column="2" Text="Geometry、Brush、Pen"/>
+
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="ImageDrawing"/>
+                <TextBlock Grid.Row="2" Grid.Column="1">
+                    封装一副图像（通常是基于文件的位图图像），该图像具有定义图像边界的矩形
+                </TextBlock>
+                <TextBlock Grid.Row="2" Grid.Column="2" Text="ImageSource、Rect"/>
+
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="VideoDrawing"/>
+                <TextBlock Grid.Row="3" Grid.Column="1">
+                    结合用于播放视频文件的媒体播放器和定义其边界的矩形
+                </TextBlock>
+                <TextBlock Grid.Row="3" Grid.Column="2" Text="Player、Rect"/>
+
+                <TextBlock Grid.Row="4" Grid.Column="0" Text="GlyphRunDrawing"/>
+                <TextBlock Grid.Row="4" Grid.Column="1">
+                    封装低级文本对象，即所谓的具有绘制用画刷的GlyphRun对象
+                </TextBlock>
+                <TextBlock Grid.Row="4" Grid.Column="2" Text="GlyphRun、ForegroundBrush"/>
+
+                <TextBlock Grid.Row="5" Grid.Column="0" Text="DrawingGroup"/>
+                <TextBlock Grid.Row="5" Grid.Column="1">
+                    组合各种类型的Drawing对象的集合。可使用GrawingGroup创建混合图画，并可使用它的一个属性一次为整个集合应用效果
+                </TextBlock>
+                <TextBlock Grid.Row="5" Grid.Column="2">
+                    BitmapEffect、BitmapEffectinput、Children、ClipGeometry、GuidelineSet、Opacity、OpacityMask、Transform
+                </TextBlock>
+
+                <TextBlock Margin="0,10" Grid.Row="6" Grid.ColumnSpan="3" Text="用于显示图画的类" FontWeight="Bold" HorizontalAlignment="Center"/>
+
+                <TextBlock Grid.Row="7" Grid.Column="0" Text="DrawingImage"/>
+                <TextBlock Grid.Row="7" Grid.Column="1">
+                    用于在Image元素中驻留图画
+                </TextBlock>
+                <TextBlock Grid.Row="7" Grid.Column="2" Text="父类ImageSource"/>
+
+                <TextBlock Grid.Row="8" Grid.Column="0" Text="DrawingBrush"/>
+                <TextBlock Grid.Row="8" Grid.Column="1">
+                    使用画刷封装图画，之后可以用画刷绘制任何表面
+                </TextBlock>
+                <TextBlock Grid.Row="8" Grid.Column="2" Text="父类Brushe"/>
+
+                <TextBlock Grid.Row="9" Grid.Column="0" Text="DrawingVisual"/>
+                <TextBlock Grid.Row="9" Grid.Column="1">
+                    允许在低级的可视化对象中放置图画。可视化对象并不具有真正元素的开销，但是如果实现了需要的基础结构，
+                    那么仍可以显示可视化对象。
+                </TextBlock>
+                <TextBlock Grid.Row="9" Grid.Column="2" Text="父类Visual"/>
+
+                <TextBlock Foreground="Red" Grid.Row="10" Grid.ColumnSpan="3">
+                    注意DrawingImage与ImageDrawing的区别
+                </TextBlock>
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="使用图画">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock TextWrapping="Wrap" Text="例：使用矢量图形为按钮创建图标（注意第二个示例的DrawingImage与第三个示例的DrawingBrush的用法和区别）" Foreground="Orange" Grid.ColumnSpan="3"/>
+                
+                <Button Grid.Row="1" Width="200" Height="450" 
+                        HorizontalContentAlignment="Left" VerticalContentAlignment="Top">
+                    <Canvas>
+                        <Ellipse Fill="{StaticResource WinterBrush}" Width="160" Height="160" Canvas.Left="20" Canvas.Top="290"/>
+                        <Ellipse Fill="Silver" Width="100" Height="100" Canvas.Left="50" Canvas.Top="320"/>
+                        <Polygon Fill="{StaticResource WinterBrush}" Points="85,300 85,0 115,0 115,40 180,40 180,70 115,70 115,110 180,110 180,140 115,140 115,300"/>
+                    </Canvas>
+                </Button>
+
+
+                <TextBlock Grid.Row="2" TextWrapping="Wrap" Margin="8">
+                    该方法最简单，但占用资源最多，因为每个元素都是完全独立的，具有自己的内存区域和事件处理程序。                    
+                </TextBlock>
+
+                <Button Grid.Row="1" Grid.Column="1" Width="200" Height="450">
+                    <Image>
+                        <Image.Source>
+                            <DrawingImage>
+                                <DrawingImage.Drawing>
+                                    <GeometryDrawing>
+                                        <GeometryDrawing.Brush>
+                                            <StaticResource ResourceKey="WinterBrush"/>
+                                        </GeometryDrawing.Brush>
+                                        <GeometryDrawing.Geometry>
+                                            <StaticResource ResourceKey="KeyGeometry"/>
+                                        </GeometryDrawing.Geometry>
+                                    </GeometryDrawing>
+                                </DrawingImage.Drawing>
+                            </DrawingImage>
+                        </Image.Source>
+                    </Image>
+                </Button>
+
+                <TextBlock Grid.Row="2" Grid.Column="1" TextWrapping="Wrap" Margin="8">
+                    使用Path对象在一定程度上减少了元素数量（使用GeometryDrawing对象代替了每个Path对象）。
+                    但仍可以进一步提高效率。
+                </TextBlock>
+
+                <Button Grid.Row="1" Grid.Column="2" Width="200" Height="450">
+                    <Button.Background>
+                        <DrawingBrush Stretch="Uniform">
+                            <DrawingBrush.Drawing>
+                                <GeometryDrawing>
+                                    <GeometryDrawing.Brush>
+                                        <StaticResource ResourceKey="WinterBrush"/>
+                                    </GeometryDrawing.Brush>
+                                    <GeometryDrawing.Geometry>
+                                        <StaticResource ResourceKey="KeyGeometry"/>
+                                    </GeometryDrawing.Geometry>
+                                </GeometryDrawing>
+                            </DrawingBrush.Drawing>
+                        </DrawingBrush>
+                    </Button.Background>
+                </Button>
+
+                <TextBlock Grid.Row="2" Grid.Column="2" Margin="8" TextWrapping="Wrap">
+                    该示例执行效率最高。使用DrawingBrush对象。
+                </TextBlock>
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="关于">
+            <Grid>
+                <TextBlock>
+                    WPF可使用Expression Design画图导出及使用Path 画图
+                    <LineBreak/>
+                    https://www.sohu.com/a/433604573_468635
+                </TextBlock>
+            </Grid>
+        </TabItem>
+    </TabControl>
+    
+</Window>

@@ -1,0 +1,17 @@
+﻿<Window x:Class="ProWPF.Advanced.WindowTracker"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"        
+        mc:Ignorable="d"
+        Title="在窗口间进行交互" Height="450" Width="800">
+    
+    <StackPanel Margin="4">
+        <Button Margin="4" Padding="4" Click="Create_Click">Click to Create a Viewer</Button>
+        <Button Margin="4" Padding="4" Click="Refresh_Click">Click to Refresh the Viewers</Button>
+
+        <TextBlock Margin="4" Foreground="Red" FontSize="12">
+            * 始终为窗口类添加自定义的方法、属性和事件层。永远不要直接向代码的其他部分公开窗体的字段或控件。
+        </TextBlock>
+    </StackPanel>
+</Window>

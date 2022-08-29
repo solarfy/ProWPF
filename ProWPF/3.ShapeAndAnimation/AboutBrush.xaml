@@ -1,0 +1,414 @@
+﻿<Window x:Class="ProWPF.ShapeAndAnimation.AboutBrush"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProWPF.ShapeAndAnimation"
+        xmlns:converters="clr-namespace:ProWPF.Converters"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:behaviors="clr-namespace:ProWPF.Behaviors"
+        mc:Ignorable="d"
+        Title="关于画刷" Height="550" Width="800">
+
+    <Window.Resources>
+        <converters:CheckedToEnumConverter x:Key="CheckedToSpreadMethodConverter" TargetEnum="{x:Type GradientSpreadMethod}"/>
+        <converters:CheckedToEnumConverter x:Key="CheckedToTileModeConverter" TargetEnum="{x:Type TileMode}"/>
+        <converters:CheckedToEnumConverter x:Key="CheckedToStreachConverter" TargetEnum="{x:Type Stretch}"/>
+
+        <Style TargetType="Rectangle" x:Key="LinearRect">
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="Height" Value="50"/>
+        </Style>
+
+        <Style TargetType="Rectangle" x:Key="VisualRect">
+            <Setter Property="Width" Value="240"/>
+            <Setter Property="Height" Value="150"/>
+            <Setter Property="FrameworkElement.Margin" Value="4"/>
+        </Style>
+    </Window.Resources>
+    
+    <TabControl>
+        <TabItem Header="LinearGradientBrush">
+            <Grid x:Name="linearGradientBrushVisual">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <GroupBox Margin="8" Header="LinearGradientBrush 线性渐变画刷">
+                    <StackPanel Margin="4">
+                        <StackPanel Orientation="Horizontal" Margin="4">
+                            <Rectangle Style="{StaticResource LinearRect}">
+                                <Rectangle.Fill>
+                                    <LinearGradientBrush>
+                                        <GradientStop Color="Blue" Offset="0"/>
+                                        <GradientStop Color="White" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+
+                            <TextBlock VerticalAlignment="Center" Margin="4" Text="Diagonal Linear Gradient"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="4">
+                            <Rectangle Style="{StaticResource LinearRect}">
+                                <Rectangle.Fill>
+                                    <LinearGradientBrush>
+                                        <GradientStop Color="Blue" Offset="0"/>
+                                        <GradientStop Color="White" Offset="0.5"/>
+                                    </LinearGradientBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+
+                            <TextBlock VerticalAlignment="Center" Margin="4" Text="With 0.5 for Offset White"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="4">
+                            <Rectangle Style="{StaticResource LinearRect}">
+                                <Rectangle.Fill>
+                                    <LinearGradientBrush StartPoint="0 0" EndPoint="0 1">
+                                        <GradientStop Color="Blue" Offset="0"/>
+                                        <GradientStop Color="White" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+
+                            <TextBlock VerticalAlignment="Center" Margin="4" Text="Horizonal Linear Gradient"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="4">
+                            <Rectangle Style="{StaticResource LinearRect}">
+                                <Rectangle.Fill>
+                                    <LinearGradientBrush StartPoint="0 0" EndPoint="1 0">
+                                        <GradientStop Color="Blue" Offset="0"/>
+                                        <GradientStop Color="White" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+
+                            <TextBlock VerticalAlignment="Center" Margin="4" Text="Vertical Linear Gradient"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="4">
+                            <Rectangle Style="{StaticResource LinearRect}">
+                                <Rectangle.Fill>
+                                    <LinearGradientBrush StartPoint="0 0" EndPoint="1 1">
+                                        <GradientStop Color="Yellow" Offset="0"/>
+                                        <GradientStop Color="Red" Offset="0.2"/>
+                                        <GradientStop Color="Blue" Offset="0.4"/>
+                                        <GradientStop Color="LimeGreen" Offset="0.6"/>
+                                    </LinearGradientBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+
+                            <TextBlock VerticalAlignment="Center" Margin="4" Text="前急后缓渐变"/>
+                        </StackPanel>
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox Header="Spread Method 传播方法(StartPoint、EndPoint没有填充全区域时使用)" Margin="8" Grid.Column="1">
+                    <StackPanel Margin="4">
+                        <RadioButton Margin="4" IsChecked="{Binding ElementName=linearBrush, Path=SpreadMethod, Converter={StaticResource CheckedToSpreadMethodConverter}, ConverterParameter=Pad, Mode=TwoWay}">
+                            Pad 渐变之外的区域使用恰当的纯色
+                        </RadioButton>
+                        <RadioButton Margin="4" IsChecked="{Binding ElementName=linearBrush, Path=SpreadMethod, Converter={StaticResource CheckedToSpreadMethodConverter}, ConverterParameter=Reflect, Mode=TwoWay}">
+                            Reflect 翻转渐变，从第二种颜色反向渐变到第一种颜色
+                        </RadioButton>
+                        <RadioButton Margin="4" IsChecked="{Binding ElementName=linearBrush, Path=SpreadMethod, Converter={StaticResource CheckedToSpreadMethodConverter}, ConverterParameter=Repeat, Mode=TwoWay}">
+                            Repeat 复制相同的颜色渐变过程
+                        </RadioButton>
+
+                        <Rectangle HorizontalAlignment="Left" Margin="8" Width="300" Height="150">
+                            <Rectangle.Fill>
+                                <LinearGradientBrush x:Name="linearBrush" StartPoint="0 0" EndPoint="0.5 0.5" SpreadMethod="Reflect">
+                                    <GradientStop Color="Blue" Offset="0"/>
+                                    <GradientStop Color="White" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                    </StackPanel>
+                </GroupBox>
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="RadialGradientBrush">
+            <GroupBox Margin="8" Header="RadialGradientBrush 径向渐变画刷">
+                <Grid x:Name="radialGradientBrushVisual">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Foreground="Red" FontSize="12" TextWrapping="Wrap" Margin="4">
+                        * RadiuX和RadiuY决定了圆的尺寸，默认为0.5，表示圆的半径为填充矩形对角线长度的一半；如果为1则将会填充整个矩形。
+                    </TextBlock>
+
+                    <TextBlock Grid.Row="1" Text="在图形上单击鼠标左键重新设置GradientOrigin" 
+                               Margin="0,12,0,0" HorizontalAlignment="Center" Foreground="LightGray" FontSize="20"/>
+
+                    <UniformGrid Grid.Row="2" Columns="3">
+                        <StackPanel VerticalAlignment="Top" Margin="0,20,0,0">
+                            <Ellipse Stroke="Black" StrokeThickness="1" Width="200" Height="200">
+                                <Ellipse.Fill>
+                                    <RadialGradientBrush RadiusX="0.5" RadiusY="0.5" GradientOrigin="0.5 0.5">
+                                        <GradientStop Color="White" Offset="0"/>
+                                        <GradientStop Color="Blue" Offset="1"/>
+                                    </RadialGradientBrush>
+                                </Ellipse.Fill>
+
+                                <i:Interaction.Behaviors>
+                                    <behaviors:MoveGradientOriginBehavior/>
+                                </i:Interaction.Behaviors>
+                            </Ellipse>
+
+                            <TextBlock Margin="0,12,0,0" HorizontalAlignment="Center">
+                                RadiuX=0.5，RadiuY=0.5
+                                <LineBreak/>
+                                GradientOrigin=(0.5,0.5)
+                            </TextBlock>
+                        </StackPanel>
+
+                        <StackPanel VerticalAlignment="Top" Margin="0,20,0,0">
+                            <Ellipse Stroke="Black" StrokeThickness="1" Width="200" Height="200">
+                                <Ellipse.Fill>
+                                    <RadialGradientBrush RadiusX="1" RadiusY="1" GradientOrigin="0.5 0.5">
+                                        <GradientStop Color="White" Offset="0"/>
+                                        <GradientStop Color="Blue" Offset="1"/>
+                                    </RadialGradientBrush>
+                                </Ellipse.Fill>
+
+                                <i:Interaction.Behaviors>
+                                    <behaviors:MoveGradientOriginBehavior/>
+                                </i:Interaction.Behaviors>
+                            </Ellipse>
+
+                            <TextBlock Margin="0,12,0,0" HorizontalAlignment="Center">
+                                RadiuX=1，RadiuY=1
+                                <LineBreak/>
+                                GradientOrigin=(0.5,0.5)
+                            </TextBlock>
+                        </StackPanel>
+
+                        <StackPanel VerticalAlignment="Top" Margin="0,20,0,0">
+                            <Ellipse Stroke="Black" StrokeThickness="1" Width="200" Height="200">
+                                <Ellipse.Fill>
+                                    <RadialGradientBrush RadiusX="1" RadiusY="1" GradientOrigin="0.7 0.7">
+                                        <GradientStop Color="White" Offset="0"/>
+                                        <GradientStop Color="Blue" Offset="1"/>
+                                    </RadialGradientBrush>
+                                </Ellipse.Fill>
+
+                                <i:Interaction.Behaviors>
+                                    <behaviors:MoveGradientOriginBehavior/>
+                                </i:Interaction.Behaviors>
+                            </Ellipse>
+
+                            <TextBlock Margin="0,12,0,0" HorizontalAlignment="Center">
+                                RadiuX=1，RadiuY=1
+                                <LineBreak/>
+                                GradientOrigin=(0.7,0.7)
+                            </TextBlock>
+                        </StackPanel>
+                    </UniformGrid>
+                </Grid>
+            </GroupBox>
+        </TabItem>
+
+        <TabItem Header="ImageBrush.Viewbox">
+            <GroupBox Header="ImageBrush.Viewbox" Margin="4">
+                <DockPanel x:Name="imageBrushViewboxVisual" LastChildFill="True" Margin="4">
+                    <TextBlock Margin="4" TextWrapping="Wrap" Foreground="Red" FontSize="12" DockPanel.Dock="Top">
+                        * 使用Viewbox属性可对图像进行裁剪，为此需要指定4个数值以描述从源图像上裁剪并使用的矩形部分，
+                        前两个数值指定矩形开始的左上角，而后两个数值指定矩形的宽度和高度。这4个数值都是使用的相对坐标系统，
+                        这一坐标系统将图像上的左上角指定(0,0)，右下角指定(1,1)。想剪裁整幅图像使用(0,0,1,1)。
+                        <LineBreak/>
+                        <LineBreak/>
+                        <Run Text="下图中拖动小方块改变右侧图像的视图" Foreground="Silver" FontSize="20"/>
+                    </TextBlock>
+
+                    <StackPanel Orientation="Horizontal" Margin="4">
+                        <Border Width="300" Height="100" BorderThickness="1" BorderBrush="Black">
+                            <Canvas x:Name="canvas">
+                                <Canvas.Background>
+                                    <ImageBrush ImageSource="/Images/google.gif"/>
+                                </Canvas.Background>
+
+                                <Rectangle x:Name="rectangle" Width="50" Height="50" Fill="#7F000000">
+                                    <i:Interaction.Behaviors>
+                                        <behaviors:DragInCanvasBehavior DragInCanvas="Rectangle_DragInCanvas" DragRange="0 0 300 100"/>
+                                    </i:Interaction.Behaviors>
+                                </Rectangle>
+                            </Canvas>
+                        </Border>
+
+                        <Rectangle Width="100" Height="100" Stroke="Black" StrokeThickness="1" Margin="20,0,0,0">
+                            <Rectangle.Fill>
+                                <ImageBrush x:Name="googleView" ImageSource="/Images/google.gif" Viewbox="0 0 1 1"/>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                    </StackPanel>
+                </DockPanel>
+            </GroupBox>
+        </TabItem>
+
+        <TabItem Header="ImageBrush.Viewport">
+            <GroupBox Margin="4" Header="平铺的ImageBrush画刷">
+                <Grid x:Name="imageBurshViewportVisual">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <GroupBox Header="Streach">
+                        <StackPanel Margin="4">
+                            <RadioButton Margin="4" 
+                                         IsChecked="{Binding ElementName=imageBrush, Path=Stretch, Converter={StaticResource CheckedToStreachConverter},ConverterParameter=None, Mode=TwoWay}">
+                                None 平铺图像永不变形，并且保持正确的形状
+                            </RadioButton>
+                            <RadioButton Margin="4"
+                                         IsChecked="{Binding ElementName=imageBrush, Path=Stretch, Converter={StaticResource CheckedToStreachConverter},ConverterParameter=Fill, Mode=TwoWay}">
+                                Fill 默认
+                            </RadioButton>
+                            <RadioButton Margin="4"
+                                         IsChecked="{Binding ElementName=imageBrush, Path=Stretch, Converter={StaticResource CheckedToStreachConverter},ConverterParameter=Uniform, Mode=TwoWay}">
+                                Uniform 按比例平铺
+                            </RadioButton>
+                            <RadioButton Margin="4"
+                                         IsChecked="{Binding ElementName=imageBrush, Path=Stretch, Converter={StaticResource CheckedToStreachConverter},ConverterParameter=UniformToFill, Mode=TwoWay}">
+                                UniformToFill 平铺图像会保持正确的纵横比，平铺图像之间没有空白
+                            </RadioButton>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <GroupBox Grid.Column="1" Header="TileMode">
+                        <StackPanel Margin="4">
+                            <RadioButton Margin="4"
+                                         IsChecked="{Binding ElementName=imageBrush, Path=TileMode, Converter={StaticResource CheckedToTileModeConverter},ConverterParameter=Tile, Mode=TwoWay}">
+                                Tile 在可用区域复制图像
+                            </RadioButton>
+                            <RadioButton Margin="4"
+                                         IsChecked="{Binding ElementName=imageBrush, Path=TileMode, Converter={StaticResource CheckedToTileModeConverter},ConverterParameter=FlipX, Mode=TwoWay}">
+                                FlipX 复制图像，但垂直翻转每个第二列
+                            </RadioButton>
+                            <RadioButton Margin="4"
+                                         IsChecked="{Binding ElementName=imageBrush, Path=TileMode, Converter={StaticResource CheckedToTileModeConverter},ConverterParameter=FlipY, Mode=TwoWay}">
+                                FlipY 复制图像，但水平翻转每个第二行
+                            </RadioButton>
+                            <RadioButton Margin="4"
+                                         IsChecked="{Binding ElementName=imageBrush, Path=TileMode, Converter={StaticResource CheckedToTileModeConverter},ConverterParameter=FlipXY, Mode=TwoWay}">
+                                FlipXY 复制图像，但垂直翻转每个第二列，并水平翻转每个第二行
+                            </RadioButton>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <GroupBox Header="ViewportUnits" Grid.Row="1" Grid.ColumnSpan="2">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Foreground="Red" FontSize="12" Margin="4" TextWrapping="Wrap" Grid.ColumnSpan="2">
+                                    * 按比列平铺：ViewportUnits=RelativeToBoundingBox 填充区域始终具有相同数量的平铺图像。为适应填充区域，平铺图像会扩展和收缩。
+                                    此方式下平铺矩形左上角坐标为(0,0)，右下角坐标为(1,1)，为得到平铺模式为Viewport属性设置的值应小于整个填充区域的尺寸。
+                                    <LineBreak/>
+                                    * 按固定尺寸平铺：ViewportUnits=Absolute 平铺图像始终具有相同的尺寸。填充区域的尺寸决定了显示平铺图像的数量。
+                                    此方式下如Viewport="0,0,32,32"表示每幅图像定义32x32单位大小，并从左上角开始平铺
+                            </TextBlock>
+
+                            <GroupBox Grid.Row="1" Margin="4" Header="RelativeToBoundingBox">
+                                <GroupBox.Background>
+                                    <ImageBrush x:Name="imageBrush" ImageSource="/Images/tile.jpg" TileMode="Tile" Stretch="None"
+                                                ViewportUnits="RelativeToBoundingBox" Viewport="0 0 0.5 0.5"/>
+                                </GroupBox.Background>
+                            </GroupBox>
+
+                            <GroupBox Grid.Row="1" Grid.Column="1" Margin="4" Header="Absolute">
+                                <GroupBox.Background>
+                                    <ImageBrush ImageSource="/Images/tile.jpg" 
+                                                TileMode="{Binding ElementName=imageBrush, Path=TileMode, Mode=OneWay}"
+                                                Stretch="{Binding ElementName=imageBrush, Path=Stretch, Mode=OneWay}"                                                
+                                                ViewportUnits="Absolute" Viewport="0 0 32 32"/>
+                                </GroupBox.Background>
+                            </GroupBox>
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+            </GroupBox>
+        </TabItem>
+
+        <TabItem Header="VisualBrush">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Foreground="Red" FontSize="12" TextWrapping="Wrap" Margin="4">
+                    * VisualBrush.Visual本身可以定义元素，但通常使用绑定表达式引用当前窗口的元素，使用绑定方式可实时更新Viual变化。
+                </TextBlock>
+                
+                <UniformGrid Grid.Row="1" Margin="4">
+                    <Grid Margin="12">
+                        <Grid.Background>
+                            <VisualBrush Visual="{Binding ElementName=linearGradientBrushVisual}"/>
+                        </Grid.Background>
+                    </Grid>
+
+                    <Grid Margin="12">
+                        <Grid.Background>
+                            <VisualBrush Visual="{Binding ElementName=radialGradientBrushVisual}"/>
+                        </Grid.Background>
+                    </Grid>
+
+                    <Grid Margin="12">
+                        <Grid.Background>
+                            <VisualBrush Visual="{Binding ElementName=imageBrushViewboxVisual}"/>
+                        </Grid.Background>
+                    </Grid>
+
+                    <Grid Margin="12">
+                        <Grid.Background>
+                            <VisualBrush Visual="{Binding ElementName=imageBurshViewportVisual}"/>
+                        </Grid.Background>
+                    </Grid>
+                </UniformGrid>
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="BitmapCacheBrush">
+            <Grid Margin="4">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Margin="4" FontSize="12" Foreground="Red" TextWrapping="Wrap">
+                    * 位图缓存画刷，BitmapCacheBrush.Target属性与VisualBrush.Visual属性类似，提供了相同的功能。
+                    两者区别是BitmapCacheBrush画刷采用了可视化内容（这些内容通过变换、剪裁、效果以及透明设置进行可改变）并要求显卡在显存中存储该内容。
+                    这样一来，当需要时可快速地重新绘制内容，而不需要WPF执行任何额外的工作。
+                </TextBlock>
+
+                <Button x:Name="btnBitmapCache" Grid.Row="1" Width="300" Height="100">
+                    这是一个真正的按钮?
+                </Button>
+
+                <Rectangle Grid.Row="2" Width="300" Height="100">
+                    <Rectangle.Fill>
+                        <BitmapCacheBrush Target="{Binding ElementName=btnBitmapCache}"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Grid>
+        </TabItem>
+    </TabControl>
+</Window>

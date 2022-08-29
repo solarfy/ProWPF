@@ -1,0 +1,97 @@
+﻿<Window x:Class="ProWPF.Advanced.TextBoxes"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"        
+        xmlns:runtime="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        Title="文本控件" Height="550" Width="800">
+
+    <Window.Resources>
+        <runtime:String x:Key="春江花月夜" xml:space="preserve">
+            春江潮水连海平，海上明月共潮生。
+            滟滟随波千万里，何处春江无月明！
+            江流宛转绕芳甸，月照花林皆似霰；
+            空里流霜不觉飞，汀上白沙看不见。
+            江天一色无纤尘，皎皎空中孤月轮。
+            江畔何人初见月？江月何年初照人？
+            人生代代无穷已，江月年年望相似。
+            不知江月待何人，但见长江送流水。
+            白云一片去悠悠，青枫浦上不胜愁。
+            谁家今夜扁舟子？何处相思明月楼？
+            可怜楼上月裴回，应照离人妆镜台。
+            玉户帘中卷不去，捣衣砧上拂还来。
+            此时相望不相闻，愿逐月华流照君。
+            鸿雁长飞光不度，鱼龙潜跃水成文。
+            昨夜闲潭梦落花，可怜春半不还家。
+            江水流春去欲尽，江潭落月复西斜。
+            斜月沉沉藏海雾，碣石潇湘无限路。
+            不知乘月几人归，落月摇情满江树。
+        </runtime:String>
+    </Window.Resources>
+    
+    <Grid Margin="4">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" Tag="主文本"/>
+            <RowDefinition Height="*" Tag="选中的文本"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Margin="4" Orientation="Horizontal" ButtonBase.Click="Button_Click">
+            <StackPanel.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="Margin" Value="8"/>
+                    <Setter Property="Padding" Value="10,5"/>
+                </Style>
+            </StackPanel.Resources>
+            
+            <Button>LineUp</Button>
+            <Button>LineDown</Button>
+            <Button>PageUp</Button>
+            <Button>PageDown</Button>
+            <Button>ScrollToHome</Button>
+            <Button>ScrollToEnd</Button>
+            <Button>Undo</Button>
+        </StackPanel>
+
+        <TextBlock Grid.Row="1" Margin="4" FontSize="10" TextOptions.TextFormattingMode="Display" Foreground="Red" TextWrapping="Wrap">
+            * 一个支持Enter键、Tab键的TextBox。
+            <LineBreak/>
+            * 不应当使用硬编码调整Height属性，可通过使用MaxLines和MinLines方式调整。    
+            <LineBreak/>
+            * 如果容器空间不足，部分文本框可能会被裁剪掉。设置MaxLines属性能够显示最大行数，可突破这一限制。
+            （使用后当空间不足时，会显示垂直滑动条VerticalScrollBar）。
+            <LineBreak/>
+            * 拼写检查（SpellCheck.IsEnabled = True）;只支持英语、西班牙语、法语和德语。可通过SpellCheck.CheckDictionaries添加自定义拼写词典文件（.lex）。
+        </TextBlock>
+        
+        <!--主文本-->
+        <TextBox x:Name="text" Grid.Row="2" Margin="4" MinLines="2" MaxLines="6" TextWrapping="Wrap" FontSize="20"
+                 AcceptsReturn="True" AcceptsTab="True" VerticalScrollBarVisibility="Auto" AutoWordSelection="True"
+                 SelectionChanged="Text_SelectionChanged" HorizontalContentAlignment="Center">
+            <TextBox.Text>
+                <StaticResource ResourceKey="春江花月夜"/>
+            </TextBox.Text>
+        </TextBox>
+
+        <!--选中的内容-->
+        <TextBlock Grid.Row="3" Margin="4" TextWrapping="Wrap">
+            选中的内容：
+            <LineBreak/>
+            <Run x:Name="runSelection"/>
+        </TextBlock>
+
+        <TextBlock Grid.Row="4" Margin="4" FontSize="10" TextOptions.TextFormattingMode="Display" Foreground="Red" TextWrapping="Wrap">
+            * SecureString是纯文本对象，以加密的方式在内存中保存，用于加密的字符串密钥是随机生产的，存储在一块从来不会写入磁盘的内存中。
+            当调用SercureString.Dispose()方法时，内存的密码数据就会被改写；当控件销毁时会自动调用该方法。
+            <LineBreak/>
+            * PasswordChar设置屏蔽字符。
+        </TextBlock>
+        
+        <PasswordBox Grid.Row="5" Margin="4" PasswordChar="!" Password="123456789"/>
+    </Grid>
+</Window>

@@ -1,0 +1,40 @@
+﻿<Window x:Class="ProWPF.Advanced.CommandTextBox"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProWPF.Advanced"
+        mc:Ignorable="d"
+        Title="自定义 TextBox命令控件" Height="450" Width="800">
+    
+    <Grid Margin="4">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Margin="4" Text="支持命令的TextBox（超过30个字符将无法输入）"/>
+        <local:CmdTextBox x:Name="cmdText" Margin="4" Grid.Row="1" Command="{x:Static local:CommandTextBox.PrintTextCommand}" CommandParameter="Print:">
+            <local:CmdTextBox.CommandBindings>
+                <CommandBinding Command="{x:Static local:CommandTextBox.PrintTextCommand}"
+                                Executed="PrintTextCommand_Executed"
+                                CanExecute="PrintTextCommand_CanExecuted"/>
+            </local:CmdTextBox.CommandBindings>
+        </local:CmdTextBox>
+
+        <TextBlock Grid.Row="2" Margin="4" HorizontalAlignment="Right">
+            字数：
+            <Run x:Name="numberText" Text="0"/>
+        </TextBlock>
+
+
+        <TextBlock Margin="4" Grid.Row="3" Text="普通的TextBox"/>
+        <TextBox x:Name="text" Margin="4" Grid.Row="4"/>
+
+        <Button Grid.Row="5" HorizontalAlignment="Right" Margin="4" Content="Clear" Padding="8,2" Click="Clear_Click"/>
+    </Grid>
+</Window>

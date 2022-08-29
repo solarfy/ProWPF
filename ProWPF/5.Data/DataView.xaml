@@ -1,0 +1,303 @@
+﻿<Window x:Class="ProWPF.Data.DataView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProWPF.Data"        
+        xmlns:component="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+        mc:Ignorable="d"
+        Title="数据视图" Height="450" Width="800" Loaded="Window_Loaded">
+
+    <Window.Resources>
+        <local:PriceRangeProductGrouper x:Key="Price50Grouper" GroupInterval="50"/>
+
+        <CollectionViewSource x:Key="GroupByRangeView">
+            <CollectionViewSource.SortDescriptions>
+                <!--注：SortDescription类不是WPF名称空间的类，需要添加名称空间别名-->
+                <component:SortDescription PropertyName="UnitCost" Direction="Ascending"/>
+            </CollectionViewSource.SortDescriptions>
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="UnitCost" Converter="{StaticResource Price50Grouper}"/>
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
+
+        <Style x:Key="SimpleProductsList" TargetType="ListBox">
+            <Setter Property="ItemTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <TextBlock>
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}{0:C} - {1}">
+                                    <Binding Path="UnitCost"/>
+                                    <Binding Path="ModelName"/>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    
+    <TabControl>
+        <TabItem Header="数据视图">
+            <TextBlock Margin="8" TextWrapping="Wrap">
+                数据视图--介于数据源与绑定的控件之间。数据视图是进入数据源的窗口，可以跟踪当前项，并且支持各种功能，如排序、过滤及分组。
+                <LineBreak/>
+                所有视图都继承自CollectionView类；并有两个特殊的派生类：ListCollectionView类和BindingListCollectionView类。
+                <LineBreak/>
+                1.如果数据源实现了IBindingList接口，就会创建BindingListCollectionView视图。当绑定到ADO.NET中的DataTable对象时会创建该视图。
+                <LineBreak/>
+                2.如果数据源没有实现IBindingList接口，但实现了IList接口，就会创建ListCollectionView视图。当绑定到ObservableCollection集合时会创建该视图。
+                <LineBreak/>
+                3.如果数据源没有实现IList或IBindingList接口，但实现了IEnumerable接口，就会得到基本的CollectionView视图。
+                <LineBreak/>
+                检索视图对象：使用System.Windows.Data.CollectionViewSource类的GetDefaultView()静态方法，该方法总是返回ICollectionView引用，
+                根据数据源将视图对象转换为合适的类。
+                <LineBreak/>
+                ItemsControl.IsSynchronizedWithCurrentItem属性设置为True时，当前选择项会被自动同步，从而匹配视图的当前位置。
+                <LineBreak/>
+                <LineBreak/>
+                CollectionViewSource类中，View属性封装视图对象，Source属性封装数据源，SortDescription属性负责排序，GroupDescription属性负责分组，
+                同时还提供Filter事件。
+            </TextBlock>
+        </TabItem>
+
+        <TabItem Header="视图导航">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!--ItemsControl.IsSynchronizedWithCurrentItem属性设置为True时，当前选择项会被自动同步，从而匹配视图的当前位置-->
+                <ComboBox Margin="8" DisplayMemberPath="ModelName" Text="{Binding Path=ModelName}"
+                          IsSynchronizedWithCurrentItem="True" IsReadOnly="False" IsEditable="True"
+                          ItemsSource="{Binding ElementName=gridProduct, Path=DataContext}"/>
+
+                <Grid x:Name="gridProduct" Grid.Row="1" Margin="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Margin" Value="8,6"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                        </Style>
+                        <Style TargetType="TextBox">
+                            <Setter Property="Margin" Value="8,6"/>
+                            <Setter Property="Padding" Value="4"/>
+                        </Style>
+                    </Grid.Resources>
+
+                    <Border Grid.RowSpan="5" Grid.ColumnSpan="2" CornerRadius="6" Background="LightGreen" Margin="0, -4"/>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="ModelNumber:"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding ModelNumber}"/>
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="ModelName:"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding ModelName}"/>
+
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="UintCost:"/>
+                    <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding UnitCost}"/>
+
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Description:"/>
+                    <TextBox Grid.Row="4" Grid.ColumnSpan="2" Text="{Binding Description}" TextWrapping="Wrap"/>
+
+                </Grid>
+
+                <StackPanel Grid.Row="2" Margin="8" HorizontalAlignment="Left" Orientation="Horizontal">
+                    <Button x:Name="btnPrev" Content="&lt;" Padding="3,4" Click="Prev_Click"/>
+                    <TextBlock x:Name="txtPosition" Margin="4,0" Text="Record 0 of 0" VerticalAlignment="Center"/>
+                    <Button x:Name="btnNext" Content="&gt;" Padding="3,4" Click="Next_Click"/>
+                </StackPanel>
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="声明方式创建视图">
+            <!--注：此处绑定的是CollectionViewSource对象，而不是CollectionViewSource.View视图对象；WPF会要求该对象创建视图，然后将视图绑定到恰当的元素-->
+            <ListBox ItemsSource="{Binding Source={StaticResource GroupByRangeView}}" Margin="8" DisplayMemberPath="UnitCost"/>
+        </TabItem>
+
+        <TabItem Header="过滤集合对象">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Margin="8" TextWrapping="Wrap">
+                    使用Filter属性接收一个Predicate委托，该委托指向自定义的过滤方法。如果被检查项目满足过滤条件就返回true，否则则返回false。
+                    <LineBreak/>
+                    当创建Predicate对象时，需指定进行检查的对象类型。可以使用Predicate&lt;object&gt;实例。
+                </TextBlock>
+
+                <DockPanel Grid.Row="1" LastChildFill="True" Margin="8">
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                        <TextBlock Text="Price > Than: " Margin="4" VerticalAlignment="Center"/>
+                        <TextBox x:Name="txtMinPrice" Grid.Column="1" Text="50" MinWidth="50" Padding="4" Margin="10,4,4,4" VerticalAlignment="Center"
+                                     TextChanged="TxtMinPrice_TextChanged"/>
+                        <Button Grid.Row="1" Content="Filter" Margin="10,4,4,4" Padding="4" Click="Filter_Click"/>
+                        <Button Grid.Row="1" Grid.Column="1" Content="Remove Filter" Margin="10,4,4,4" Padding="4" Click="RemoveFilter_Click"/>
+                    </StackPanel>
+
+                    <TextBlock DockPanel.Dock="Top" Margin="4" TextWrapping="Wrap" Foreground="Red" VerticalAlignment="Center" 
+                                   Text="此处过滤后也会影响 视图导航 标签中的列表，因为它们共用的一个数据视图对象（ListCollectionView）。"/>
+
+                    <ListBox ItemsSource="{Binding ElementName=gridProduct, Path=DataContext}"/>
+                </DockPanel>
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="过滤DataTable对象">
+            <DockPanel LastChildFill="True">
+                <TextBlock Margin="8" DockPanel.Dock="Top" TextWrapping="Wrap">
+                    DataTable对象都与一个DataView对象相关联（System.Data名称空间中定义），可使用DataView对象过滤记录（使用RowFilter属性进行过滤，或者使用RowStateFilter属性通知状态进行过滤）。
+                    DataView对象还通过Sort属性支持排序。与WPF视图对象不同，DataView对象不跟踪数据集中的位置，DataView对象还提供了用于锁定编辑能力的附加属性（AllowDelete、AllowEdit以及AllowNew）。
+                    <LineBreak/>
+                    DataView对象使用BindingListCollectionView视图不支持Filter属性，但可使用CustomFilter属性，该属性本身不做任何工作--只是接收指定的过滤字符串，并使用该字符串设置DataView.RowFilter属性。
+                    <LineBreak/>
+                    DataView.RowFilter属性将基于字符串过滤表达式作为参数，类似于SELECT查询中用于构造WHERE子句的SQL代码段，因此需要遵循所有的SQL约定，例如需使用单引号（‘’）将字符串和和日期值括起来，
+                    如果希望使用多个条件，还需使用OR和AND关键字进行结合。
+                </TextBlock>
+
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="8">
+                    <TextBlock Text="Price > Than: " Margin="4" VerticalAlignment="Center"/>
+                    <TextBox x:Name="txtMiniTablePrice" Text="50" MinWidth="50" Padding="4" Margin="10,4,4,4" VerticalAlignment="Center"/>
+                    <Button Content="Filter" Margin="10,4,4,4" Padding="4" Click="TableFilter_Click"/>
+                    <Button Content="Remove Filter" Margin="10,4,4,4" Padding="4" Click="TableRemoveFilter_Click"/>
+                </StackPanel>
+
+                <ListBox x:Name="tableProducts" Margin="8" DisplayMemberPath="UnitCost" ItemStringFormat="单价{0:C}"/>
+            </DockPanel>
+        </TabItem>
+
+        <TabItem Header="排序">
+            <DockPanel LastChildFill="True">
+                <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="8">
+                    使用System.ComponentModel.SortDescription对象对每个数据项中的一个或多个属性进行排序，并确定排序的方法（升序或降序）。
+                    <LineBreak/>
+                    自定义排序规则，但只能用于ListCollectionView视图，不能用于BindingListCollectionView视图（可使用DataView对象的Sort属性）。ListCollectionView.CustomSort属性接收一个ICompare对象，
+                    该对象在两个对象直接进行比较，并且指示较大项。
+                </TextBlock>
+
+                <Grid Margin="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <GroupBox Header="排序规则">
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Content="UnicCost单价" Margin="8" Checked="UnitCostSort_Click" Unchecked="UnitCostSort_Click"/>
+                            <CheckBox Content="ModelName名称长度（自定义排序）" Margin="8" Checked="ModelNameSort_Click" Unchecked="ModelNameSort_Click"/>
+                        </StackPanel>
+                    </GroupBox>
+                    
+                    <GroupBox Grid.Row="1" Header="集合对象的排序">
+                        <ListBox Style="{StaticResource SimpleProductsList}" Margin="4" ItemsSource="{Binding ElementName=gridProduct, Path=DataContext}"/>
+                    </GroupBox>
+
+                    <GroupBox Grid.Row="2" Header="DataTable对象的排序">
+                        <ListBox Style="{StaticResource SimpleProductsList}" Margin="4" ItemsSource="{Binding ElementName=tableProducts, Path=ItemsSource}"/>
+                    </GroupBox>
+                </Grid>
+            </DockPanel>
+        </TabItem>
+
+        <TabItem Header="分组">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                
+                <TextBlock Margin="8" TextWrapping="Wrap">
+                    需要为CollectionView.GroupDescription集合添加System.ComponentModel.PropertyGroupDescription对象。
+                    <LineBreak/>
+                    使用分组时，列表为每个分组创建单独的GroupItem对象，并且为列表添加这些GroupItem对象。GroupItem是内容控件，所以每个GroupItem对象都包含一个适当的具有
+                    实际数据的容器（如ListBoxItem对象）。
+                    <LineBreak/>
+                    可通过ItemsControl.GroupStyle属性更改GroupItem对象格式，该属性提供了一个GroupStyle对象的集合。
+                    <LineBreak/>
+                    为添加分组标题，需要设置GroupStyle.HeaderTemplate属性。当编写表达式时，不能绑定到列表中的数据（本例中Product对象），而要绑定到分组的
+                    PropertyGroupDescription对象，即如果要显示分组的字段值，需要使用PropertyGroupDescription.Name属性（而不是使用Product.CategoryName属性）。
+                    <LineBreak/>
+                    分组虚拟化，使用VirtualizingStackPanel.IsVirtualizingWhenGrouping属性设置为true时，分组列表将与未分组列表获得相同的虚拟化性能。
+                    （组合使用分组和长列表时，会导致速度明显变缓，因此谨慎使用）
+                </TextBlock>
+
+                <StackPanel Grid.Row="1" Margin="8" Orientation="Horizontal">
+                    <Button Content="按种类分组" Click="Group_Click"  Padding="12,4"/>
+                    <Button Content="按价格的范围分组" Click="RangeGroup_Click" Padding="12, 4" Margin="10,0"/>
+                    <Button Content="移除分组" Click="RemoveGroup_Click" Padding="12,4"/>
+                </StackPanel>
+
+                <ListBox Grid.Row="2" Margin="8" ItemsSource="{Binding ElementName=gridProduct, Path=DataContext}"
+                         Style="{StaticResource SimpleProductsList}">
+                    <ListBox.GroupStyle>
+                        <GroupStyle>
+                            <GroupStyle.HeaderTemplate>
+                                <DataTemplate>
+                                    <!--PropertyGroupDescription.Name属性-->
+                                    <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="White" Background="LightGreen" Margin="0,5,0,0" Padding="3"/>
+                                </DataTemplate>
+                            </GroupStyle.HeaderTemplate>
+                        </GroupStyle>
+                    </ListBox.GroupStyle>
+                </ListBox>
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="实时成型">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock Margin="8" TextWrapping="Wrap">
+                    如果改变正在使用的视图过滤、排序或分组，就需要调用ICollectionViewSource.Refresh()方法刷新视图，并确保正确的项目出现在列表中。
+                    但对于一些特殊情况，如某个编辑操作将产品价格降低至视图过滤条件最低值以下，这会导致该记录从当前视图上消失，但除非强制执行，否则看不到任何的更改。
+                    <LineBreak/>
+                    实时成型：监视特定属性的变化，如果发现变化，就确定相应更改会影响当前视图并触发刷新操作。
+                    <LineBreak/>
+                    实时成型的3个标准：
+                    <LineBreak/>
+                    1.数据对象必须实现INotifyPropertyChanged接口。
+                    <LineBreak/>
+                    2.集合必须实现ICollectionViewLiveShaping。标准的ListCollectionView和BindingListCollectionView类都实现了该接口。
+                    <LineBreak/>
+                    3.必须明确启用实时成型。为此需要在ListCollectionView和BindingListCollectionView对象上设置多个属性。（实时成型会增加开销，因此是否启用要酌情而定）
+                    <LineBreak/>
+                    IsLiveFiltering、IsLiveSorting、IsLiveGrouping，每个属性为不同的视图功能启用实时成型。启用实时成型后，还需要告知需要监控哪些属性，
+                    LiveFilteringProperties、LiveSortingProperties、LiveGroupProperties，此设计旨在确保获得最佳性能，忽略那些不重要的属性。
+                </TextBlock>
+
+                <StackPanel Grid.Row="1" Margin="8" Orientation="Horizontal">
+                    <CheckBox Content="过滤大于50的单价" Margin="4" Checked="EnabledFilter_Click" Unchecked="EnabledFilter_Click"/>
+                    <CheckBox Content="启用实时成型" Margin="4" Checked="EnabledLive_Click" Unchecked="EnabledLive_Click"/>
+                </StackPanel>
+
+                <!--编辑记录，将价格降低至过滤条件以下。Product对象会报告此更改，ListCollectionView会注意到这点，重新评估条件，然后刷新视图，最终结果是低价自动消失-->
+                <DataGrid Grid.Row="2" Margin="8" ItemsSource="{Binding ElementName=gridProduct, Path=DataContext}" AutoGenerateColumns="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Width="*" Binding="{Binding Path=UnitCost}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </TabItem>
+    </TabControl>
+</Window>

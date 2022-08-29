@@ -1,0 +1,22 @@
+﻿<Window x:Class="ProWPF.TemplateAndCustom.LogicalAndVisual"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProWPF.TemplateAndCustom"
+        mc:Ignorable="d"
+        Title="逻辑树与可视化树" Height="450" Width="800">
+    
+    <DockPanel LastChildFill="True">
+        <TextBlock DockPanel.Dock="Top" Margin="8" TextWrapping="Wrap">
+            逻辑树：属性继承器，事件路由，样式都是由逻辑树工作的。对于自定义元素逻辑树起不到多大作用。System.Windows.LogicalTreeHelper浏览逻辑树。
+            <LineBreak/>
+            可视化树：逻辑树的扩展版本，它将元素分成更小的部分。System.Windows.Media.VisualTreeHelper浏览可视化树。
+        </TextBlock>
+
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Button Content="逻辑树" Padding="20,5" Margin="8" Click="LogicalDisplay_Click"/>
+            <Button Content="可视化树" Padding="20, 5" Margin="8" Click="VisualDisplay_Click"/>
+        </StackPanel>
+    </DockPanel>
+</Window>

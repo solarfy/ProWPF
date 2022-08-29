@@ -1,0 +1,151 @@
+﻿<Window x:Class="ProWPF.Advanced.ObjectResource"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProWPF.Advanced"
+        xmlns:res="clr-namespace:ProWPFResource;assembly=ProWPFResource" 
+        mc:Ignorable="d"
+        Title="对象资源" Height="650" Width="800">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Themes/generic.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <ImageBrush x:Key="TileBrush" TileMode="Tile" ImageSource="/Images/happyface.png"
+                    ViewportUnits="Absolute" Viewport="0 0 32 32" Opacity="0.3"/>
+
+            <!--非共享资源 x:Shared="False"-->
+            <SolidColorBrush x:Key="UnsharedBrush" x:Shared="False" Color="Orange" Opacity="0.3"/>
+
+        </ResourceDictionary>
+    </Window.Resources>
+    
+    <Grid Margin="4">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Margin="4" Grid.ColumnSpan="2" Foreground="Red" FontSize="12" TextWrapping="Wrap">
+            * 程序集资源：嵌入到编译过的程序集中的二进制数据，确保应用程序所需的图像或声音文件。
+            <LineBreak/>
+            * 对象资源：在某个位置定义并且其他几个位置重复使用的.NET对象。（可实例化任何.NET类及自定义类--公有的无参构造函数和可写的属性）
+            <LineBreak/>
+            * 使用系统资源SystemColors（颜色），SystemFonts（字体），SystemParameters（描述各种屏幕元素的标准尺寸、键盘和鼠标设置、屏幕尺寸以及各种图形效果）
+            它们的命名空间在System.Windows。
+        </TextBlock>
+
+        <GroupBox Grid.Row="1" Grid.Column="0" Header="StaticResource" Margin="4">
+            <StackPanel Margin="4">
+                <TextBlock Margin="4" TextWrapping="Wrap" 
+                           Text="静态资源在创建窗口时加载。只获取对象一次，根据对象的类型及使用对象的方式，对象的任何变化都可能注意到。" />
+
+                <Button Background="{StaticResource TileBrush}" Margin="5" Padding="5" 
+                        FontWeight="Bold" FontSize="14" Content="A Tiled Button"/>
+
+                <TextBlock Margin="4" Text="静态资源须在资源定义之后使用。"/>
+
+                <!--只要不在同一集合中，就可以重用资源名称，如此处的TileBrush-->
+                <!--使用静态资源时，必须在引用资源之前在标记中定义资源（可使用动态资源）-->
+                <Button Margin="5" Padding="5" FontWeight="Bold" FontSize="14">
+                    <Button.Resources>
+                        <ImageBrush x:Key="TileBrush" TileMode="Tile" ViewportUnits="Absolute" Viewport="0 0 10 10"
+                                    ImageSource="/Images/happyface.png" Opacity="0.3"/>
+                    </Button.Resources>
+                    <!--资源放在嵌套元素中（而不是特性），保证资源在引用之前定义-->
+                    <Button.Background>
+                        <StaticResource ResourceKey="TileBrush"/>
+                    </Button.Background>
+                    Another Tiled Button
+                </Button>
+
+                <TextBlock Margin="4" Text="非共享资源，每次使用时创建单独的对象实例。"/>
+
+                <Button Margin="5" Padding="5" FontWeight="Bold" FontSize="14" Background="{StaticResource UnsharedBrush}"
+                        Content="Unshared Button"/>
+
+                <TextBlock Margin="4" Text="直接使用系统资源，当系统资源变化时，使用者不随之更改。"/>
+
+                <Label Margin="5" Padding="5" Content="Ordinary text" HorizontalContentAlignment="Center"
+                       Foreground="{x:Static SystemColors.WindowTextBrush}"
+                       FontWeight="{StaticResource {x:Static SystemFonts.CaptionFontWeightKey}}"
+                       FontSize="{x:Static SystemFonts.IconFontSize}"/>
+
+                <TextBlock Margin="4" Text="资源字典"/>
+
+                <Button Background="{StaticResource WizardBrush}" Margin="5" Padding="5" 
+                        FontWeight="Bold" FontSize="14" Content="A Wizard Button"/>
+            </StackPanel>
+        </GroupBox>
+
+        <GroupBox Grid.Row="1" Grid.Column="1" Header="DynamicResource" Margin="4">
+            <StackPanel Margin="4">
+                <TextBlock Margin="4" TextWrapping="Wrap" Text="动态资源在第一此使用它们时加载，如果发生了改变就会重新应用资源。需要对象时都会重新从资源集合中查找对象。"/>
+
+                <Button Background="{DynamicResource TileBrush}" Margin="5" Padding="5" 
+                        FontWeight="Bold" FontSize="14" Content="A Tiled Button"/>
+
+                <TextBlock Margin="4" Text="动态资源可在资源定义之前使用。"/>
+                
+                <!--使用动态资源在资源定义之前使用，这里使用特性-->
+                <Button Margin="5" Padding="5" FontWeight="Bold" FontSize="14" Background="{DynamicResource TileBrush}">
+                    <Button.Resources>
+                        <ImageBrush x:Key="TileBrush" TileMode="Tile" ViewportUnits="Absolute" Viewport="0 0 10 10"
+                                    ImageSource="/Images/happyface.png" Opacity="0.3"/>
+                    </Button.Resources>
+                    Another Tiled Button
+                </Button>
+
+                <TextBlock Margin="4" Text="非共享资源有单独的对象实例，实例与实例间互不影响。"/>
+                
+                <Button Margin="5" Padding="5" FontWeight="Bold" FontSize="14" Background="{DynamicResource UnsharedBrush}"
+                        Content="Unshared Button"/>
+
+                <TextBlock Margin="4" Text="动态使用系统资源，当系统资源变化时，使用者随着变化。"/>
+
+                <Label Margin="5" Padding="5" Content="Ordinary text" HorizontalContentAlignment="Center"
+                       Foreground="{DynamicResource {x:Static SystemColors.WindowTextBrush}}"
+                       FontWeight="{DynamicResource {x:Static SystemFonts.CaptionFontWeightKey}}"
+                       FontSize="{DynamicResource {x:Static SystemFonts.IconFontSize}}"/>
+
+                <TextBlock Margin="4" TextWrapping="Wrap">
+                    程序集共享资源；当使用ComponentResourceKey时，只能使用动态资源，不能使用静态资源
+                </TextBlock>
+
+                <Button Background="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type res:CustomResources}, ResourceId=SadTileBrush}}" 
+                        Margin="5" Padding="5" FontWeight="Bold" FontSize="14" Content="SadTileBrush"/>
+
+                <Button Background="{DynamicResource {x:Static res:CustomResources.SadTileBrushKey}}" 
+                        Margin="5" Padding="5" FontWeight="Bold" FontSize="14" Content="SadTileBrushKey"/>
+            </StackPanel>
+        </GroupBox>
+
+        <Grid Grid.Row="2" Grid.ColumnSpan="2" Margin="4">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <TextBlock TextWrapping="Wrap" Margin="4" FontSize="12" Foreground="Red">
+                Brush类继承自Freezable类。Freezable类有一个基本的变化跟踪特性（如果不需要改变，被“冻结”为只读状态）。
+                所以无论何时在WPF中改变画刷，所有使用该画刷的控件都会自动更新。控件是否通过资源获取其画刷无关紧要。
+            </TextBlock>
+
+            <StackPanel Grid.Row="1" Margin="4" Orientation="Horizontal" HorizontalAlignment="Center">
+
+                <Button Content="改变画刷" Margin="4" Padding="8,4" Click="ChangeBrush_Click"/>
+                <Button Content="替换画刷" Margin="4" Padding="8,4" Click="ReplaceBrush_Click"/>
+                <Button Content="改变非共享画刷" Margin="4" Padding="8,4" Click="ChangeUnsharedBrush_Click"
+                        ToolTip="非共享资源，每次使用都有单独的实例，所有此处更改资源无效（即使是Brush类）"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

@@ -1,0 +1,191 @@
+﻿<Window x:Class="ProWPF.ShapeAndAnimation.MediaEffects"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProWPF.ShapeAndAnimation"
+        xmlns:ctrls="clr-namespace:CustomControlLibrary;assembly=CustomControlLibrary"
+        xmlns:effects="clr-namespace:ProWPF.Effects"
+        mc:Ignorable="d"
+        Title="效果" Height="450" Width="800">
+
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Margin" Value="6"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="Slider">
+            <Setter Property="IsSnapToTickEnabled" Value="True"/>
+            <Setter Property="TickPlacement" Value="Both"/>
+            <Setter Property="Margin" Value="6"/>
+        </Style>
+    </Window.Resources>
+
+    <TabControl>
+        <TabItem Header="模糊、阴影、像素着色器">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.ColumnSpan="3" Margin="8" HorizontalAlignment="Center" FontWeight="Bold">
+                    Effect类（位于System.Windows.Media.Effects名称空间）
+                </TextBlock>
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="BlurEffect"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="模糊元素中的内容"/>
+                <TextBlock Grid.Row="1" Grid.Column="2" Text="Radius、KernelType、RenderingBias"/>
+
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="DropShadowEffect"/>
+                <TextBlock Grid.Row="2" Grid.Column="1" Text="在元素背后添加矩形阴影"/>
+                <TextBlock Grid.Row="2" Grid.Column="2" Text="BlurRadius、Color、Direction、Opacity、ShadowDepth、RenderingBias"/>
+
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="ShaderEffect"/>
+                <TextBlock Grid.Row="3" Grid.Column="1" Text="应用像素着色器，像素着色器是使用高级着色语言（High Level Shading Language，HLSL）事件制作好的并且已经编译过的效果"/>
+                <TextBlock Grid.Row="3" Grid.Column="2" Text="PixelShader"/>
+
+                <TextBlock Grid.Row="4" Grid.ColumnSpan="3" Foreground="Red" TextWrapping="Wrap">
+                    * 表中列出的是Effect类的派生类，请勿将位图效果类（派生自BitmpapEffect，该类与Effect类位于相同的名称空间）相混淆。
+                    <LineBreak/>
+                    位图效果类存在几个严重缺陷：
+                    <LineBreak/>
+                    1.位图效果不支持像素着色器。
+                    <LineBreak/>
+                    2.位图效果是用非托管代码实现的，从而需要完全信任的应用程序。
+                    <LineBreak/>
+                    3.位图效果总是使用软件进行渲染，不使用显卡资源。这使得它们的速度较慢，当处理大量元素或具有较大可视化表面的元素尤其如此。
+                </TextBlock>
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="BlurEffec">
+            <DockPanel LastChildFill="True" Margin="8">
+                <StackPanel DockPanel.Dock="Top">
+                    <TextBlock Margin="8">
+                        模糊系数：<Run Text="{Binding ElementName=sdBlurRadius, Path=Value, Mode=OneWay}"/>
+                    </TextBlock>
+                    <Slider x:Name="sdBlurRadius" Margin="8" Maximum="10" Minimum="0" Value="0"
+                            TickFrequency="1" IsSnapToTickEnabled="True" TickPlacement="Both"/>
+                </StackPanel>
+
+                <Button Width="300" Height="200">
+                    <Button.Background>
+                        <ImageBrush ImageSource="/Images/happyface.png" TileMode="Tile" ViewportUnits="Absolute" Viewport="0,0,128,128"/>
+                    </Button.Background>
+
+                    <TextBlock Foreground="OrangeRed" Text="这是一个模糊按钮" FontSize="30"/>
+
+                    <Button.Effect>
+                        <BlurEffect Radius="{Binding ElementName=sdBlurRadius, Path=Value, Mode=OneWay}"/>
+                    </Button.Effect>
+                </Button>
+            </DockPanel>
+        </TabItem>
+
+        <TabItem Header="DropShadowEffect">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="1.5*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Color 设置阴影的颜色" VerticalAlignment="Center"/>
+                <ctrls:ColorListBox x:Name="shadowColor" Margin="10,0" Grid.Column="1" IsDisplayColorName="False" Orientation="Horizontal"/>
+
+                <TextBlock Grid.Row="1">
+                    ShadowDepth 确定阴影离开内容多远，单位为像素（默认为5）。将属性设置为0时会创建外侧光辉效果，该效果会在内容周围添加晕彩
+                </TextBlock>
+                <Slider x:Name="sdShadowDepth" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="10,0"
+                        Maximum="100" Minimum="0" TickFrequency="1" Value="5"/>
+
+                <TextBlock Grid.Row="2">
+                    BlurRadius 模糊阴影，该属性与BlurEffect.Radius属性类似（默认为5）
+                </TextBlock>
+                <Slider x:Name="sdShadowBlur" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="10,0"
+                        Maximum="20" Minimum="0" TickFrequency="1" Value="5"/>
+
+                <TextBlock Grid.Row="3">
+                    Opacity 使用1（完全不透明）到0（完全透明）之间的小数，使阴影部分透明
+                </TextBlock>
+                <Slider x:Name="sdShadowOpacity" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Margin="10,0"
+                        Maximum="1" Minimum="0" TickFrequency="0.1" Value="1"/>
+
+                <TextBlock Grid.Row="4">
+                    Direction 使用从0到360之间的角度值指定阴影相对于内容的位置。将该属性设置为0时会将阴影放置在右边，增加该属性会逆时针移动阴影。默认为315，该值会将阴影放置在元素右下方。
+                </TextBlock>
+                <Slider x:Name="sdShadowDirection" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" Margin="10,0"
+                        Maximum="360" Minimum="0" TickFrequency="50" Value="315"/>
+
+                <TextBlock Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Center" FontSize="36">
+                    DropShadowEffect 阴影文字
+                    <TextBlock.Effect>
+                        <DropShadowEffect Color="{Binding ElementName=shadowColor, Path=SelectedValue, Mode=OneWay}"
+                                          ShadowDepth="{Binding ElementName=sdShadowDepth, Path=Value, Mode=OneWay}"
+                                          BlurRadius="{Binding ElementName=sdShadowBlur, Path=Value, Mode=OneWay}"
+                                          Opacity="{Binding ElementName=sdShadowOpacity, Path=Value, Mode=OneWay}"
+                                          Direction="{Binding ElementName=sdShadowDirection, Path=Value, Mode=OneWay}"/>
+                    </TextBlock.Effect>
+                </TextBlock>
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="ShaderEffect">
+            <DockPanel LastChildFill="True">
+                <TextBlock DockPanel.Dock="Top">
+                    ShaderEffect是一个抽象类，可继承该类以创建自定义的像素着色器。
+                    <LineBreak/>
+                    像素着色器是用高级着色语言（High Level Shader Language，HLSL）编写的，该语言是Microsoft DirectX的一部分，使用fxc.exe命令行工具进行编译。
+                    <LineBreak/>
+                    一旦将HLSL文件编译成.ps文件，就可以将其添加入项目中，并将Build Action设置为Resource。
+                    最后再创建一个继承自ShaderEffect的自定义类并使用该资源。  
+                    <LineBreak/>
+                    如果需要输入参数的像素着色器，需要调用RegisterPixelShaderSampleProperty()静态方法创建相应的依赖项属性
+                </TextBlock>
+
+                <GroupBox Header="自定义像素着色器 ShaderEffect" TextBlock.FontSize="24">
+                    <UniformGrid>
+                        <TextBlock Text="Grayscale 灰度级">
+                            <TextBlock.Effect>
+                                <effects:GrayscaleEffect/>
+                            </TextBlock.Effect>
+                        </TextBlock>
+                        <TextBlock Text="MotionBlur 运动模糊">
+                            <TextBlock.Effect>
+                                <effects:MotionBlurEffect BlurAngle="30"/>
+                            </TextBlock.Effect>
+                        </TextBlock>
+                        <TextBlock Text="Negative 消极的">
+                            <TextBlock.Effect>
+                                <effects:NegativeEffect/>
+                            </TextBlock.Effect>
+                        </TextBlock>
+                        <TextBlock Text="ZoomBlur 缩放模糊">
+                            <TextBlock.Effect>
+                                <effects:ZoomBlurEffect/>
+                            </TextBlock.Effect>
+                        </TextBlock>
+                    </UniformGrid>
+                </GroupBox>
+            </DockPanel>
+        </TabItem>
+    </TabControl>
+</Window>

@@ -1,0 +1,43 @@
+﻿<Window x:Class="ProWPF.Advanced.MouseCursor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProWPF.Advanced"
+        mc:Ignorable="d"
+        Title="自定义光标" Height="450" Width="800">
+
+    <Grid Margin="4">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.Resources>
+            <Style TargetType="Border">
+                <Setter Property="BorderThickness" Value="30"/>
+                <Setter Property="CornerRadius" Value="0"/>
+            </Style>
+        </Grid.Resources>
+
+        <StackPanel Margin="4" Orientation="Horizontal" TextBlock.FontSize="20">
+            <CheckBox x:Name="chkForceCursor" Margin="4" FontSize="20" Content="使用父元素的Cursor" VerticalContentAlignment="Center"/>
+            <CheckBox Margin="20,4,4,4" FontSize="20" Content="使用自定义光标" VerticalContentAlignment="Center"
+                      Checked="ChkCustom_Checked" Unchecked="ChkCustom_Unchecked"/>
+        </StackPanel>
+        
+        <!--ForceCursor；父元素覆盖子元素的Curson-->
+        <Border Grid.Row="1" Margin="4" BorderBrush="Yellow" Cursor="Hand" 
+                ForceCursor="{Binding ElementName=chkForceCursor, Path=IsChecked}">
+            <Border BorderBrush="Indigo" Cursor="Help">
+                <Border BorderBrush="Chocolate" Cursor="SizeAll">
+                    <Border BorderBrush="Crimson" Cursor="Pen">
+                        <Border BorderBrush="DarkGray" Cursor="Cross">
+                            <TextBlock Text="自定义光标" FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+                    </Border>
+                </Border>
+            </Border>
+        </Border>
+    </Grid>
+</Window>

@@ -1,0 +1,160 @@
+﻿<Window x:Class="ProWPF.Data.DataTemplates"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProWPF.Data"
+        xmlns:model="clr-namespace:StoreDataBase.Model;assembly=StoreDataBase"
+        xmlns:db="clr-namespace:StoreDataBase;assembly=StoreDataBase"
+        mc:Ignorable="d"
+        Title="数据模板" Height="450" Width="800">
+
+    <Window.Resources>
+        <ObjectDataProvider x:Key="Products" MethodName="GetProducts" ObjectType="{x:Type db:StoreDB}"/>
+
+        <local:ImagePathConverter x:Key="ImagePathConverter"/>
+
+        <!--这里未指定x:Key，而是使用DataType，指定改模板用于绑定的Product对象-->
+        <DataTemplate DataType="{x:Type model:Product}">
+            <Grid Background="AliceBlue" SnapsToDevicePixels="True">
+                <!--这里只能使用RelativeSource属性通过元素树上查找，因为当前的数据对象是Product对象-->
+                <Border Margin="4" BorderThickness="1" BorderBrush="SteelBlue"
+                        Background="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=Background}" 
+                        CornerRadius="4">
+                    <Grid Margin="4">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="col1"/>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="col2"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <TextBlock FontWeight="Bold" Text="{Binding Path=ModelNumber}"></TextBlock>
+                        <TextBlock Grid.Row="1" Text="{Binding Path=ModelName}"></TextBlock>
+
+                        <Image Grid.Row="2" Grid.ColumnSpan="2" Margin="4"
+                               Source="{Binding Path=ProductImagePath, Converter={StaticResource ImagePathConverter}}"/>
+
+                        <!--Tag属性直接使用数据项的所有信息，通过删除Path属性-->
+                        <Button Grid.Column="1" Content="View ..." Padding="4,2" Margin="4"
+                                Click="View_Click" Tag="{Binding}"/>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <DataTemplate.Triggers>
+                <!--触发器只能测试值是否相等，不支持复杂的比较条件。如果有此需求，可通过使用IValueConverter和IMultiValueConverter接口实现-->
+                <DataTrigger Binding="{Binding Path=CategoryName}" Value="Tools">
+                    <Setter Property="ListBoxItem.Foreground" Value="Red"/>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+                       
+        </DataTemplate>
+    </Window.Resources>
+    
+    <TabControl>
+        <TabItem Header="数据模板选择器">
+            <!--ListBox.ItemTemplate 自动使用自定义的DataTemplate-->
+            <!--Grid.IsSharedSizeScope 设置共享尺寸组-->
+            <ListBox x:Name="lstProducts" Grid.IsSharedSizeScope="True" ItemsSource="{Binding Source={StaticResource Products}}" Margin="8">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Style.Triggers>
+                            <!--选中后使用深红色背景，为使其更有效需将ItemTemplate背景色绑定至ListBoxItem背景色-->
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="DarkRed"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                
+                <ListBox.ItemTemplateSelector>
+                    <local:SingleCriteriaHighlightTemplateSelector PropertyToEvaluate="CategoryName" PropertyValuteToHighlight="Travel">
+                        <!--使用模板选择器，进行高亮显示-->
+                        <local:SingleCriteriaHighlightTemplateSelector.HighlightTemplate>
+                            <DataTemplate>
+                                <Border Margin="4" BorderThickness="1" BorderBrush="SteelBlue" CornerRadius="4" Background="LightYellow">
+                                    <Grid Margin="4">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+
+                                        <TextBlock FontWeight="Bold" Text="{Binding Path=ModelNumber}"></TextBlock>
+                                        <TextBlock Grid.Row="1" FontWeight="Bold" Text="{Binding Path=ModelName}"></TextBlock>
+                                        <TextBlock Grid.Row="2" FontStyle="Italic" HorizontalAlignment="Right" Text="*** Great for vacations ***"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </local:SingleCriteriaHighlightTemplateSelector.HighlightTemplate>
+                    </local:SingleCriteriaHighlightTemplateSelector>
+                </ListBox.ItemTemplateSelector>
+            </ListBox>
+        </TabItem>
+
+        <TabItem Header="数据触发器">
+            <!--从技术角度上看，展开的细节始终存在，只不过隐藏了而已。因此，当第一次创建列表而不是选择项时，需要承担生成这些元素造成的开销-->
+            <ListBox Margin="8" ItemsSource="{Binding Source={StaticResource Products}}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border Margin="5" BorderThickness="1" BorderBrush="SteelBlue" CornerRadius="4" MaxWidth="700">
+                            <StackPanel Margin="3">
+                                <TextBlock Text="{Binding Path=ModelName}"/>
+                                <StackPanel>
+                                    <StackPanel.Style>
+                                        <Style>
+                                            <Style.Triggers>
+                                                <!--这里使用RelativeSource绑定到元素树上的ListBoxItem对象上-->
+                                                <DataTrigger Binding="{Binding Path=IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}}" Value="False">
+                                                    <Setter Property="StackPanel.Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </StackPanel.Style>
+                                    <TextBlock Margin="3" Text="{Binding Path=Description}" TextWrapping="Wrap" HorizontalAlignment="Left"/>
+                                    <Image Source="{Binding Path=ProductImagePath,Converter={StaticResource ImagePathConverter}}" Stretch="None"/>
+                                    <Button FontWeight="Regular" HorizontalAlignment="Right" Padding="1" Tag="{Binding}" Content="View Details..." Click="View_Click"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </TabItem>
+
+        <TabItem Header="改变项的容器">
+            <DockPanel LastChildFill="True">
+                <TextBlock Margin="8" TextWrapping="Wrap" DockPanel.Dock="Top">
+                    通过设置ItemsPanel属性，来修改项的布局。改面板可以是继承自System.Windows.Controls.Panel的任意类。
+                    这里使用WrapPanel面板，为了使该面板奏效，还须将ScrollViewer.HorizontalScrollBarVisiblity附加属性设置为Disabled，
+                    从而确保WrapPanel不会使用无限宽度来布局。
+                    <LineBreak/>
+                    VirtualizingStackPanel面板确保能够高效地处理大量的绑定数据，所以处理大量数据时推荐使用改面板。
+                </TextBlock>
+
+                <ListBox ItemsSource="{Binding Source={StaticResource Products}}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border CornerRadius="4" BorderThickness="1" BorderBrush="Silver">
+                                <StackPanel Margin="8">
+                                    <TextBlock Text="{Binding ModelName}" HorizontalAlignment="Center"/>
+                                    <Image Source="{Binding Path=ProductImagePath, Converter={StaticResource ImagePathConverter}}" Stretch="None"
+                                           HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </DockPanel>
+        </TabItem>
+    </TabControl>
+</Window>

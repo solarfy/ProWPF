@@ -1,0 +1,109 @@
+﻿<Window x:Class="ProWPF.Advanced.ToolTips"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProWPF.Advanced"
+        mc:Ignorable="d"
+        Title="工具提示" Height="760" Width="800">
+    
+    <UniformGrid Rows="8" Columns="2" TextBlock.FontSize="20" Margin="4">
+        <UniformGrid.Resources>
+            <Style TargetType="Label">
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="Padding" Value="50,10"/>
+                <Setter Property="Background" Value="AliceBlue"/>
+            </Style>
+        </UniformGrid.Resources>
+
+        <Label Content="默认的提示" ToolTip="默认的提示"/>
+
+        <Label Content="阴影|文字|图片">
+            <Label.ToolTip>
+                <ToolTip HasDropShadow="True">
+                    <StackPanel>
+                        <TextBlock Margin="4" Text="文字和图片" HorizontalAlignment="Center"/>
+                        <Image Margin="4" Source="/Images/happyface.png"/>
+                        <TextBlock Margin="4" Text="文字和图片" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </ToolTip>
+            </Label.ToolTip>
+        </Label>
+
+        <Label Content="透明背景|阴影">
+            <Label.ToolTip>
+                <ToolTip Background="#60AA4030" Content="透明背景|阴影"/>
+            </Label.ToolTip>
+        </Label>
+
+        <Label Content="鼠标位置偏移">
+            <Label.ToolTip>
+                <ToolTip HorizontalOffset="20" VerticalOffset="20" Content="鼠标位置偏移"/>
+            </Label.ToolTip>
+        </Label>
+
+        <Label Content="右边缘对齐|偏移">
+            <Label.ToolTip>
+                <ToolTip Placement="Right" HorizontalOffset="10" VerticalOffset="10">
+                    右边缘对齐|偏移
+                </ToolTip>
+            </Label.ToolTip>
+        </Label>
+
+        <Label Content="下边缘对齐|自定义位置">
+            <Label.ToolTip>
+                <ToolTip Placement="Bottom" PlacementRectangle="200,50,0,0">
+                    下边缘对齐|自定义位置
+                </ToolTip>
+            </Label.ToolTip>
+        </Label>
+
+        <Label Content="指定元素上边缘对齐（无效）">
+            <Label.ToolTip>
+                <!--指定元素需使用绑定-->
+                <ToolTip PlacementTarget="{Binding ElementName=text}" Placement="Top">
+                    <StackPanel Margin="4">
+                        <TextBlock Margin="4" Text="指定元素上边缘对齐"/>
+                        <TextBlock x:Name="text" Margin="4" Text="需要使用绑定"/>
+                    </StackPanel>
+                </ToolTip>
+            </Label.ToolTip>
+        </Label>
+
+        <Label Content="绝对坐标">
+            <Label.ToolTip>
+                <ToolTip Placement="Absolute" HorizontalOffset="100" VerticalOffset="100">
+                    绝对坐标
+                </ToolTip>
+            </Label.ToolTip>
+        </Label>
+        
+        <Label Content="延迟打开|底边缘对齐" ToolTipService.InitialShowDelay="5000"
+               ToolTipService.Placement="Bottom" ToolTip="延迟5s开启"/>
+
+        <Label Content="&lt;-- 跳过延迟打开" ToolTipService.BetweenShowDelay="5000"
+               ToolTip="在此期间移动到另一个控件，新的工具提示会立即显示，从而跳过设定的InitialShowDelay；如果超出时间则失效"/>
+
+        <Label Content="显示时长" ToolTipService.ShowDuration="5000" ToolTip="最大显示5s时长"/>
+
+        <Label Content="阴影|控件禁用显示" ToolTipService.HasDropShadow="True" ToolTipService.ShowOnDisabled="True"
+               ToolTip="禁用控件后显示工具提示"/>
+
+        <Label Content="使用运行时计算位置">
+            <Label.ToolTip>
+                <ToolTip Placement="Custom" CustomPopupPlacementCallback="CustomPlacement">
+                    使用运行时计算位置
+                </ToolTip>
+            </Label.ToolTip>
+        </Label>
+
+        <TextBlock TextWrapping="Wrap" Margin="4">
+            ToolTipService类属性值是不能继承的，这意味着父元素中设置的属性值，不能到达子类嵌套的元素。            
+        </TextBlock>
+
+        <TextBlock TextWrapping="Wrap" Margin="4">
+            ToolTipService还提供了ToolTipOpening和ToolTipClosing路由事件；可通过设置IsOpen属性手动显示和隐藏工具提示。
+        </TextBlock>
+    </UniformGrid>
+</Window>

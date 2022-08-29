@@ -1,0 +1,24 @@
+﻿<Window x:Class="ProWPF.ShapeAndAnimation.DrawBitmap"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProWPF.ShapeAndAnimation"
+        mc:Ignorable="d"
+        Title="生成位图" Height="450" Width="800">
+    
+    <DockPanel LastChildFill="True">
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+            <Button Margin="4" Padding="20,8" Click="LoadImage_Click">
+                加载图片
+            </Button>
+        </StackPanel>
+
+        <Image x:Name="img" Margin="4" Width="780" Height="380"  Stretch="UniformToFill"
+                Initialized="Image_Initialized"
+                MouseLeftButtonDown="Image_MouseLeftButtonDown"
+                MouseRightButtonDown="Image_MouseRightButtonDown"
+                MouseMove="Image_MouseMove"
+                MouseWheel="Image_MouseWheel"/>
+    </DockPanel>
+</Window>

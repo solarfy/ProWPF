@@ -1,0 +1,8 @@
+E:\Code\WPF\ProWPF\CustromControlLibrary\bin\Debug\CustromControlLibrary.dll
+E:\Code\WPF\ProWPF\CustromControlLibrary\bin\Debug\CustromControlLibrary.pdb
+E:\Code\WPF\ProWPF\CustromControlLibrary\obj\Debug\CustromControlLibrary.csproj.AssemblyReference.cache
+E:\Code\WPF\ProWPF\CustromControlLibrary\obj\Debug\CustromControlLibrary.Properties.Resources.resources
+E:\Code\WPF\ProWPF\CustromControlLibrary\obj\Debug\CustromControlLibrary.csproj.GenerateResource.cache
+E:\Code\WPF\ProWPF\CustromControlLibrary\obj\Debug\CustromControlLibrary.csproj.CoreCompileInputs.cache
+E:\Code\WPF\ProWPF\CustromControlLibrary\obj\Debug\CustromControlLibrary.dll
+E:\Code\WPF\ProWPF\CustromControlLibrary\obj\Debug\CustromControlLibrary.pdb

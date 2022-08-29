@@ -1,0 +1,699 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C0D3BA85-8E70-4057-A63F-220933B80512}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>ProWPF</RootNamespace>
+    <AssemblyName>ProWPF</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Tools\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>ProWPF.Program</StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Expression.Blend.Sdk.1.0.2\lib\net45\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="1.Basic\CustomControl.xaml.cs">
+      <DependentUpon>CustomControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="1.Basic\KeyboardEvent.xaml.cs">
+      <DependentUpon>KeyboardEvent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="1.Basic\ModularContent.xaml.cs">
+      <DependentUpon>ModularContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="1.Basic\MouseEvent.xaml.cs">
+      <DependentUpon>MouseEvent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="1.Basic\RoutingStrategy.xaml.cs">
+      <DependentUpon>RoutingStrategy.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="1.Basic\SharedSizeGroup.xaml.cs">
+      <DependentUpon>SharedSizeGroup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="2.Advanced\AboutBinding.xaml.cs">
+      <DependentUpon>AboutBinding.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="2.Advanced\AboutCommand.xaml.cs">
+      <DependentUpon>AboutCommand.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="2.Advanced\AssemblyResource.xaml.cs">
+      <DependentUpon>AssemblyResource.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="2.Advanced\CommandHistory.xaml.cs">
+      <DependentUpon>CommandHistory.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="2.Advanced\CommandTextBox.xaml.cs">
+      <DependentUpon>CommandTextBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="2.Advanced\CustomApplication.xaml.cs">
+      <DependentUpon>CustomApplication.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="2.Advanced\DateControl.xaml.cs">
+      <DependentUpon>DateControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="2.Advanced\Expanders.xaml.cs">
+      <DependentUpon>Expanders.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="2.Advanced\FileRegistration.xaml.cs">
+      <DependentUpon>FileRegistration.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="2.Advanced\LabelTarget.xaml.cs">
+      <DependentUpon>LabelTarget.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="2.Advanced\ListColors.xaml.cs">
+      <DependentUpon>ListColors.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="2.Advanced\MouseCursor.xaml.cs">
+      <DependentUpon>MouseCursor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="2.Advanced\ObjectResource.xaml.cs">
+      <DependentUpon>ObjectResource.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="2.Advanced\Popups.xaml.cs">
+      <DependentUpon>Popups.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="2.Advanced\RangeControl.xaml.cs">
+      <DependentUpon>RangeControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="2.Advanced\ScrollViewers.xaml.cs">
+      <DependentUpon>ScrollViewers.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="2.Advanced\SingleApplication.xaml.cs">
+      <DependentUpon>SingleApplication.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="2.Advanced\StyleAndBehavior.xaml.cs">
+      <DependentUpon>StyleAndBehavior.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="2.Advanced\TextBoxes.xaml.cs">
+      <DependentUpon>TextBoxes.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="2.Advanced\TextText.xaml.cs">
+      <DependentUpon>TextText.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="2.Advanced\ToolTips.xaml.cs">
+      <DependentUpon>ToolTips.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="2.Advanced\WindowTracker.xaml.cs">
+      <DependentUpon>WindowTracker.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="2.Advanced\WPFGlobalization.xaml.cs">
+      <DependentUpon>WPFGlobalization.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="3.ShapeAndAnimation\AboutBrush.xaml.cs">
+      <DependentUpon>AboutBrush.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="3.ShapeAndAnimation\AboutDrawing.xaml.cs">
+      <DependentUpon>AboutDrawing.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="3.ShapeAndAnimation\AboutTransform.xaml.cs">
+      <DependentUpon>AboutTransform.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="3.ShapeAndAnimation\AboutTransparent.xaml.cs">
+      <DependentUpon>AboutTransparent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="3.ShapeAndAnimation\AdvancedAnimation.xaml.cs">
+      <DependentUpon>AdvancedAnimation.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="3.ShapeAndAnimation\AnimationEasing.xaml.cs">
+      <DependentUpon>AnimationEasing.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="3.ShapeAndAnimation\AnimationTypes.xaml.cs">
+      <DependentUpon>AnimationTypes.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="3.ShapeAndAnimation\BasicAnimation.xaml.cs">
+      <DependentUpon>BasicAnimation.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="3.ShapeAndAnimation\Bomb.xaml.cs">
+      <DependentUpon>Bomb.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="3.ShapeAndAnimation\BombDropper.xaml.cs">
+      <DependentUpon>BombDropper.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="3.ShapeAndAnimation\DrawBitmap.xaml.cs">
+      <DependentUpon>DrawBitmap.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="3.ShapeAndAnimation\PerFrameAnimationsView.xaml.cs">
+      <DependentUpon>PerFrameAnimationsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="3.ShapeAndAnimation\MediaEffects.xaml.cs">
+      <DependentUpon>MediaEffects.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="3.ShapeAndAnimation\PathAndGeometry.xaml.cs">
+      <DependentUpon>PathAndGeometry.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="3.ShapeAndAnimation\PolygonAndPolyline.xaml.cs">
+      <DependentUpon>PolygonAndPolyline.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="3.ShapeAndAnimation\ViewboxResize.xaml.cs">
+      <DependentUpon>ViewboxResize.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="3.ShapeAndAnimation\VisualObject.xaml.cs">
+      <DependentUpon>VisualObject.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="4.TemplateAndCustom\ControlTemplateBrowser.xaml.cs">
+      <DependentUpon>ControlTemplateBrowser.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="4.TemplateAndCustom\CustomButtonTemplate.xaml.cs">
+      <DependentUpon>CustomButtonTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="4.TemplateAndCustom\CustomControlExample.xaml.cs">
+      <DependentUpon>CustomControlExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="4.TemplateAndCustom\CustomListBox.xaml.cs">
+      <DependentUpon>CustomListBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="4.TemplateAndCustom\LogicalAndVisual.xaml.cs">
+      <DependentUpon>LogicalAndVisual.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="4.TemplateAndCustom\LogicalTreeDisplay.xaml.cs">
+      <DependentUpon>LogicalTreeDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="4.TemplateAndCustom\SwitchStyle.xaml.cs">
+      <DependentUpon>SwitchStyle.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="4.TemplateAndCustom\VisualTreeDisplay.xaml.cs">
+      <DependentUpon>VisualTreeDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="5.Data\AboutDataGrid.xaml.cs">
+      <DependentUpon>AboutDataGrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="5.Data\AboutListView.xaml.cs">
+      <DependentUpon>AboutListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="5.Data\AboutTreeView.xaml.cs">
+      <DependentUpon>AboutTreeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="5.Data\BindingProductObject.xaml.cs">
+      <DependentUpon>BindingProductObject.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="5.Data\BindingToCollection.xaml.cs">
+      <DependentUpon>BindingToCollection.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="5.Data\BindingToTable.xaml.cs">
+      <DependentUpon>BindingToTable.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="5.Data\DataConversion.xaml.cs">
+      <DependentUpon>DataConversion.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="5.Data\DataProvider.xaml.cs">
+      <DependentUpon>DataProvider.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="5.Data\DataTemplates.xaml.cs">
+      <DependentUpon>DataTemplates.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="5.Data\DataValidation.xaml.cs">
+      <DependentUpon>DataValidation.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="5.Data\DataView.xaml.cs">
+      <DependentUpon>DataView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="5.Data\ImagePathConverter.cs" />
+    <Compile Include="5.Data\ImproveLargeListPerformance.xaml.cs">
+      <DependentUpon>ImproveLargeListPerformance.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="5.Data\ListControl.xaml.cs">
+      <DependentUpon>ListControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="5.Data\NoBlankProductRule.cs" />
+    <Compile Include="5.Data\PositivePriceRule.cs" />
+    <Compile Include="5.Data\PriceConverter.cs" />
+    <Compile Include="5.Data\PriceRangeProductGrouper.cs" />
+    <Compile Include="5.Data\PriceToBackgroundConverter.cs" />
+    <Compile Include="5.Data\ProductByPriceFilter.cs" />
+    <Compile Include="5.Data\SingleCriteriaHighlightStyleSelector.cs" />
+    <Compile Include="5.Data\SingleCriteriaHighlightTemplateSelector.cs" />
+    <Compile Include="5.Data\SortByTextLength.cs" />
+    <Compile Include="5.Data\ValueInStockConverter.cs" />
+    <Compile Include="Behaviors\DragInCanvasBehavior.cs" />
+    <Compile Include="Behaviors\MoveGradientOriginBehavior.cs" />
+    <Compile Include="Behaviors\WatermarkTexBehavior.cs" />
+    <Compile Include="Chapters.cs" />
+    <Compile Include="PerFrameAnimations\FallingBalls\FallingBalls.xaml.cs">
+      <DependentUpon>FallingBalls.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PerFrameAnimations\FollowMouseWithTime\FollowMouseWithTime.xaml.cs">
+      <DependentUpon>FollowMouseWithTime.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PerFrameAnimations\FollowMouse\FollowMouse.xaml.cs">
+      <DependentUpon>FollowMouse.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Converters\CheckedToEnumConverter.cs" />
+    <Compile Include="Effects\Grayscale\CustomEffect.cs" />
+    <Compile Include="Effects\MotionBlur\MotionBlurEffect.cs" />
+    <Compile Include="Effects\Negative\NegativeEffect.cs" />
+    <Compile Include="Effects\ZoomBlur\ZoomBlurEffect.cs" />
+    <Compile Include="PerFrameAnimations\ParticleEffect\MagnetismCanvas.cs" />
+    <Compile Include="PerFrameAnimations\ParticleEffect\ParticleEffectExample.xaml.cs">
+      <DependentUpon>ParticleEffectExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PerFrameAnimations\ParticleEffect\TimeTracker.cs" />
+    <Compile Include="PerFrameAnimations\ReusableFollowMouse\FollowMouseCanvas.cs" />
+    <Compile Include="PerFrameAnimations\ReusableFollowMouse\FollowMouseCanvasExample.xaml.cs">
+      <DependentUpon>FollowMouseCanvasExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Tools\FileRegistrationHelper.cs" />
+    <Page Include="1.Basic\CustomControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="1.Basic\KeyboardEvent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="1.Basic\ModularContent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="1.Basic\MouseEvent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="1.Basic\RoutingStrategy.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="1.Basic\SharedSizeGroup.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="2.Advanced\AboutBinding.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="2.Advanced\AboutCommand.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="2.Advanced\AssemblyResource.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="2.Advanced\CommandHistory.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="2.Advanced\CommandTextBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="2.Advanced\CustomApplication.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="2.Advanced\DateControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="2.Advanced\Expanders.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="2.Advanced\FileRegistration.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="2.Advanced\LabelTarget.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="2.Advanced\ListColors.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="2.Advanced\MouseCursor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="2.Advanced\ObjectResource.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="2.Advanced\Popups.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="2.Advanced\RangeControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="2.Advanced\ScrollViewers.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="2.Advanced\SingleApplication.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="2.Advanced\StyleAndBehavior.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="2.Advanced\TextBoxes.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="2.Advanced\TextText.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="2.Advanced\ToolTips.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="2.Advanced\WindowTracker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="2.Advanced\WPFGlobalization.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="3.ShapeAndAnimation\AboutBrush.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="3.ShapeAndAnimation\AboutDrawing.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="3.ShapeAndAnimation\AboutTransform.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="3.ShapeAndAnimation\AboutTransparent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="3.ShapeAndAnimation\AdvancedAnimation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="3.ShapeAndAnimation\AnimationEasing.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="3.ShapeAndAnimation\AnimationTypes.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="3.ShapeAndAnimation\BasicAnimation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="3.ShapeAndAnimation\Bomb.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="3.ShapeAndAnimation\BombDropper.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="3.ShapeAndAnimation\DrawBitmap.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="3.ShapeAndAnimation\PerFrameAnimationsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="3.ShapeAndAnimation\MediaEffects.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="3.ShapeAndAnimation\PathAndGeometry.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="3.ShapeAndAnimation\PolygonAndPolyline.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="3.ShapeAndAnimation\ViewboxResize.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="3.ShapeAndAnimation\VisualObject.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="4.TemplateAndCustom\ControlTemplateBrowser.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="4.TemplateAndCustom\CustomButtonTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="4.TemplateAndCustom\CustomControlExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="4.TemplateAndCustom\CustomListBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="4.TemplateAndCustom\LogicalAndVisual.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="4.TemplateAndCustom\LogicalTreeDisplay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="4.TemplateAndCustom\SwitchStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="4.TemplateAndCustom\VisualTreeDisplay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="5.Data\AboutDataGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="5.Data\AboutListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="5.Data\AboutTreeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="5.Data\BindingProductObject.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="5.Data\BindingToCollection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="5.Data\BindingToTable.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="5.Data\DataConversion.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="5.Data\DataProvider.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="5.Data\DataTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="5.Data\DataValidation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="5.Data\DataView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="5.Data\ImproveLargeListPerformance.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="5.Data\ListControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PerFrameAnimations\FallingBalls\FallingBalls.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PerFrameAnimations\FollowMouseWithTime\FollowMouseWithTime.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PerFrameAnimations\FollowMouse\FollowMouse.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="PerFrameAnimations\ParticleEffect\ParticleEffectExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PerFrameAnimations\ReusableFollowMouse\FollowMouseCanvasExample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Brushes.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Button.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Resource Include="Effects\Grayscale\GrayscaleEffect.ps" />
+    <Resource Include="Effects\MotionBlur\MotionBlurEffect.ps" />
+    <Resource Include="Effects\Negative\NegativeEffect.ps" />
+    <Resource Include="Effects\ZoomBlur\ZoomBlurEffect.ps" />
+    <None Include="packages.config" />
+    <None Include="Tools\app.manifest" />
+    <Resource Include="Fonts\FZYanSJW.ttf" />
+    <Resource Include="Fonts\FZYanSJW_Cu.ttf" />
+    <Resource Include="Fonts\FZYanSJW_Xian.ttf" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\happyface.png" />
+    <Resource Include="Images\p1.jpeg" />
+    <Resource Include="Images\p2.jpeg" />
+    <Resource Include="Images\p3.jpeg" />
+    <Resource Include="Images\p4.jpeg" />
+    <Resource Include="Images\splash_screen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\google.gif" />
+    <Resource Include="Images\tile.jpg" />
+    <Resource Include="Images\celestial.jpg" />
+    <Resource Include="Images\happyface.jpg" />
+    <Resource Include="Images\grandpiano.jpg" />
+    <Resource Include="Images\pointer.png" />
+    <Resource Include="Images\day.jpg" />
+    <Resource Include="Images\night.jpg" />
+    <Content Include="Sounds\ding.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sounds\start.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\CustromControlLibrary\CustomControlLibrary.csproj">
+      <Project>{c861ba14-50ae-4ae2-93d0-df6d152a18ec}</Project>
+      <Name>CustomControlLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ProWPFResource\ProWPFResource.csproj">
+      <Project>{319ed07a-9580-4ae2-bdce-a301bba7ccad}</Project>
+      <Name>ProWPFResource</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\StoreDataBase\StoreDataBase.csproj">
+      <Project>{d8a5c0fd-b391-4244-ab2e-0cd9f4b821c3}</Project>
+      <Name>StoreDataBase</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

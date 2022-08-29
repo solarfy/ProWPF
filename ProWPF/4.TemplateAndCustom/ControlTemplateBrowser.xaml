@@ -1,0 +1,20 @@
+﻿<Window x:Class="ProWPF.TemplateAndCustom.ControlTemplateBrowser"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProWPF.TemplateAndCustom"
+        mc:Ignorable="d"
+        Title="控件模板浏览器" Height="550" Width="860" Loaded="Window_Loaded">
+    
+    <Grid x:Name="grid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <ListBox x:Name="lstTypes" Margin="8" Padding="2,2,10,2" DisplayMemberPath="Name" SelectionChanged="Types_SelectionChanged"/>
+
+        <TextBox x:Name="txtTemplate" Grid.Column="1" Margin="8" VerticalScrollBarVisibility="Visible" TextWrapping="Wrap"/>
+    </Grid>
+</Window>

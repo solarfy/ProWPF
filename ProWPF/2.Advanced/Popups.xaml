@@ -1,0 +1,70 @@
+﻿<Window x:Class="ProWPF.Advanced.Popups"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProWPF.Advanced"
+        mc:Ignorable="d"
+        Title="弹 窗" Height="500" Width="820" TextBlock.FontSize="20">
+
+    <Grid Margin="4">
+        <TextBlock Margin="4" TextWrapping="Wrap">
+            <Run>Popup控件永远不会自动显示，为显示Popup控件，必须设置IsOpen属性。</Run>
+            <LineBreak/>
+            <Run>默认情况下StaysOpen属性为true，Popup控件会一直显示；当设置为false时，用户在其他地方点击鼠标，Popup控件将会消失</Run>
+            <LineBreak/>
+            <Run>使用PopupAnimation的动画（默认值为None），需设置AllowsTransparency=True。</Run>
+            <LineBreak/>
+            <Run>使用触发器时，只需创建Popup.IsMouseOver=True且Popup.IsOpen=True时进行响应的触发器。</Run>
+            <LineBreak/>
+            <Run>点击</Run>
+            <Run Foreground="Blue"  TextDecorations="Underline" MouseLeftButtonDown="OpenPopup_MouseLeftButtonDown">此处</Run>
+
+            <Run x:Name="runMouseOver">移动</Run>
+        </TextBlock>
+
+        <!--主弹窗-->
+        <Popup x:Name="popup" StaysOpen="True" AllowsTransparency="True" Placement="Mouse" PopupAnimation="None">
+            <Border Background="AliceBlue" BorderBrush="Orange" BorderThickness="2">
+                <StackPanel Margin="4" TextBlock.Foreground="Green">
+                    <TextBlock Text="None（默认值）" TextDecorations="Underline" Margin="10,4" MouseLeftButtonDown="OpenNonePopup_MouseLeftButtonDown"/>
+                    <TextBlock Text="Fade（弹窗窗口的透明度逐渐增加）" TextDecorations="Underline" Margin="10,4" MouseLeftButtonDown="OpenFadePopup_MouseLeftButtonDown"/>
+                    <TextBlock Text="Scroll（如果空间允许，弹出窗口将从窗口的左上角滑入）" TextDecorations="Underline" Margin="10,4" MouseLeftButtonDown="OpenScrollPopup_MouseLeftButtonDown"/>
+                    <TextBlock Text="Slide（如果控件允许，弹出窗口将从上向下滑进位置）" TextDecorations="Underline" Margin="10,4" MouseLeftButtonDown="OpenSlidePopup_MouseLeftButtonDown"/>
+                </StackPanel>
+            </Border>
+        </Popup>
+
+        <Popup x:Name="popupNone" StaysOpen="False" AllowsTransparency="True" Placement="Mouse" PopupAnimation="None">
+            <Border Background="AliceBlue" BorderBrush="Violet" BorderThickness="2">
+                <TextBlock>
+                    Hello World
+                </TextBlock>
+            </Border>
+        </Popup>
+
+        <Popup x:Name="popupFade" StaysOpen="False" AllowsTransparency="True" Placement="Mouse" PopupAnimation="Fade">
+            <Border Background="AliceBlue" BorderBrush="Cyan" BorderThickness="2">
+                <TextBlock>
+                     你好，世界！
+                </TextBlock>
+            </Border>
+        </Popup>
+
+        <Popup x:Name="popupScroll" StaysOpen="False" AllowsTransparency="True" Placement="Mouse" PopupAnimation="Scroll">
+            <Border Background="AliceBlue" BorderBrush="Orange" BorderThickness="2">
+                <TextBlock>
+                     Hello World
+                </TextBlock>
+            </Border>
+        </Popup>
+
+        <Popup x:Name="popupSlide" StaysOpen="False" AllowsTransparency="True" Placement="Mouse" PopupAnimation="Slide">
+            <Border Background="AliceBlue" BorderBrush="BlueViolet" BorderThickness="2">
+                <TextBlock>
+                     你好，世界！
+                </TextBlock>
+            </Border>
+        </Popup>
+    </Grid>
+</Window>

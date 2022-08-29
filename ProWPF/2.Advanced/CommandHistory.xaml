@@ -1,0 +1,61 @@
+﻿<Window x:Name="window" x:Class="ProWPF.Advanced.CommandHistory"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProWPF.Advanced"
+        mc:Ignorable="d"
+        Title="跟踪和翻转命令" Height="450" Width="800" Unloaded="Window_Unloaded">
+
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static local:CommandHistory.ApplicationUndo}" 
+                        CanExecute="ApplicationUndo_CanExecute"
+                        Executed="ApplicationUndo_Executed"/>
+    </Window.CommandBindings>
+    
+          
+    <Grid Margin="4">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="1.5*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal">
+            <StackPanel.Resources>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Margin" Value="4"/>
+                    <Setter Property="Padding" Value="8,2"/>
+                </Style>
+            </StackPanel.Resources>
+            
+            <ToolBar>
+                <StackPanel Orientation="Horizontal">
+                    <Button Command="ApplicationCommands.Cut" Content="{Binding RelativeSource={RelativeSource self}, Path=Command.Text}"/>
+                    <Button Command="ApplicationCommands.Copy" Content="{Binding RelativeSource={RelativeSource self}, Path=Command.Text}"/>
+                    <Button Command="ApplicationCommands.Paste" Content="{Binding RelativeSource={RelativeSource self}, Path=Command.Text}"/>
+                    <Button Command="ApplicationCommands.Undo" Content="{Binding RelativeSource={RelativeSource self}, Path=Command.Text}"
+                            ToolTip="需要选中其中一个TextBox"/>
+                </StackPanel>
+            </ToolBar>
+
+            <ToolBar>
+                <Button Command="{x:Static local:CommandHistory.ApplicationUndo}" Content="{Binding RelativeSource={RelativeSource self}, Path=Command.Text}"/>
+            </ToolBar>
+        </StackPanel>
+
+        <TextBox Grid.Row="1" Margin="4">
+            Text typed here.
+        </TextBox>
+
+        <TextBox Grid.Row="2" Margin="4">
+            Text typed here.
+        </TextBox>
+
+        <ListBox Grid.Row="3" Margin="4" ItemsSource="{Binding ElementName=window, Path=CommandCollection}"
+                 DisplayMemberPath="CommandName" ScrollViewer.VerticalScrollBarVisibility="Visible">
+            
+        </ListBox>
+    </Grid>
+</Window>

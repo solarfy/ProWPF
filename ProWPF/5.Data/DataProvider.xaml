@@ -1,0 +1,113 @@
+﻿<Window x:Class="ProWPF.Data.DataProvider"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProWPF.Data"
+        xmlns:db="clr-namespace:StoreDataBase;assembly=StoreDataBase"
+        mc:Ignorable="d"
+        Title="数据提供者" Height="450" Width="800">
+
+    <Window.Resources>
+        <!--创建一个StoreDB的实例，并调用GetProducts()方法-->
+        <ObjectDataProvider x:Key="productsProvider"  ObjectType="{x:Type db:StoreDB}" MethodName="GetProducts"/>
+
+        <XmlDataProvider x:Key="xmlProducts" Source="pack://application:,,,/ProWPFResource;component/Store.xml" XPath="/NewDataSet"/>
+    </Window.Resources>
+    
+    <TabControl>
+        <TabItem Header="描述">
+            <TextBlock Margin="8" TextWrapping="Wrap">
+                所有的数据提供者都继承自System.Windows.Data.DataSourceProvider类，目前,WPF只提供了以下两个数据提供者：
+                <LineBreak/>
+                ObjectDataProvider，该数据提供者通过调用另一类中的方法获取信息。
+                1.它能创建需要的对象并为构造函数传递参数。
+                2.它能调用所创建对象中的方法，并向它传递方法的参数。
+                3.它能异步的创建数据对象（在窗口加载前一直等待，此后在后台完成工作）
+                <LineBreak/>
+                XmlDataProvider，该数据提供者直接从XML文件获取信息。
+            </TextBlock>
+        </TabItem>
+
+        <TabItem Header="ObjectDataProvider">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <TextBlock TextWrapping="Wrap" Margin="8">
+                    ObjectDataProvider是专门针对检索数据而设计的，而不是针对更新数据。即无法强制ObjectDataProvider数据提供者调用StoreDB类中的另一方法来触发更新。
+                    <LineBreak/>
+                    如果GetProducts()方法中发生异常，该异常将从构造函数中的InitializeComponent()调用上传。对于这种情况最好的方法是使用异步。
+                    当发生异常时，不会通告失败信息（但仍会在Debug窗口中显示跟踪消息来详细地描述错误）
+                    <LineBreak/>
+                    只要将ObjectDataProvider.IsAsynchronous属性设置为True，ObjectDataProvider数据提供者就会在后台线程中执行工作（类似BackgroundWorker组件）,
+                    一旦数据构造完成并从方法返回，所有绑定元素就可以使用该数据提供者了。
+                    <LineBreak/>
+                    &lt;ObjectDataProvider IsAsynchronrous="True" ... /&gt;
+                    <LineBreak/>
+                    <LineBreak/>
+                     异步数据绑定。把Binding.IsAsync属性设置为True，WPF异步地从数据对象检索绑定的属性。
+                    <LineBreak/>
+                    &lt;TextBox Text="{Binding Path=ModeNumber, IsAsync=True}"/ ... &gt;
+                    <LineBreak/>
+                    数据对象自身仍然是同步创建的，仅针对一些属性获取时的耗时操作。通过这种方式，同步方式应用程序会立即显示信息，异步则会在信息准备就绪后显示。
+                    <LineBreak/>
+                    WPF还提供了基于异步绑定构建的优先绑定功能。如下所示
+                </TextBlock>
+
+                <!--异步优先绑定-->
+                <TextBlock Grid.Row="1" Margin="8" Background="GreenYellow">
+                    <TextBlock.Text>
+                        <PriorityBinding>
+                            <Binding Path="SlowSpeedProperty" IsAsync="True"/>
+                            <Binding Path="MediumSpeedProperty" IsAsync="True"/>
+                            <Binding Path="FastSpeedProperty"/>
+                            <!--注：绑定放置的顺序很重要。如果SlowSpeedProperty可用，就用它来设置文本；如果不可用就用MediumSpeedProperty属性；如果再不可用就用FastSpeedProperty属性 -->
+                            <!--除了列表最后的最快、优先级最低的绑定外，必须将其他所有绑定设置为异步绑定。最后一个也可以设置为异步的-->
+                        </PriorityBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+                
+                <!--注：此处使用的是Binding-Source-->
+                <ListBox Grid.Row="2" Margin="8" ItemsSource="{Binding Source={StaticResource productsProvider}}"/>
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="XmlDataProvider">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Margin="8" TextWrapping="Wrap">
+                    XmlDataProvider数据提供者，用于从单独的文件、Web站点或应用程序资源中提前XML数据，并使应用程序中的元素能够使用所提取到的数据。
+                    XmlDataProvider被设计为只读的，所以其不具有修改数据的能力。
+                    <LineBreak/>
+                    为使用XmlDataProvider数据提供者，首先要定义它并通过设置Source属性将它指向恰当的文件。
+                    <LineBreak/>
+                    &lt;XmlDataProvider x:Key="MyProvider" Source="Store.xml" XPath="/Products" /&gt;
+                    <LineBreak/>
+                    默认情况下XmlDataProvider.IsAsynchoronous属性设置为True。
+                    <LineBreak/>
+                    为使用XML文件中的数据，需使用XPath表达式。XPath类似路径的表示方法，使用“/”标识XML文件的根，如/Products标识名为&lt;Products&gt;的根元素。
+                    当使用XmlDataProvider数据提供者中使用XPath时，必须确定根节点。
+                    <LineBreak/>
+                    同样的当使用绑定表达式时，需使用Binding.XPath属性代替Binding.Path属性。
+                </TextBlock>
+
+                <ListBox x:Name="lstProducts" Grid.Row="1" Margin="8" DisplayMemberPath="ModelName" SelectedValuePath="ModelName"
+                         ItemsSource="{Binding Source={StaticResource xmlProducts}, XPath=Products}" SelectedIndex="1"/>
+
+                <StackPanel Grid.Row="2" Margin="8">
+                    <TextBlock Text="选中的产品型号：" Margin="0,4"/>
+                    <TextBox Text="{Binding ElementName=lstProducts, Path=SelectedValue, Mode=OneWay}"/>
+                </StackPanel>
+            </Grid>
+        </TabItem>
+    </TabControl>
+</Window>

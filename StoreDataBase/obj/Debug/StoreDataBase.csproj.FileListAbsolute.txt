@@ -1,0 +1,16 @@
+E:\Code\WPF\ProWPF\StoreDataBase\bin\Debug\Store.xml
+E:\Code\WPF\ProWPF\StoreDataBase\bin\Debug\Store.xsd
+E:\Code\WPF\ProWPF\StoreDataBase\bin\Debug\StoreDataBase.dll
+E:\Code\WPF\ProWPF\StoreDataBase\bin\Debug\StoreDataBase.pdb
+E:\Code\WPF\ProWPF\StoreDataBase\obj\Debug\StoreDataBase.csproj.AssemblyReference.cache
+E:\Code\WPF\ProWPF\StoreDataBase\obj\Debug\StoreDataBase.csproj.CoreCompileInputs.cache
+E:\Code\WPF\ProWPF\StoreDataBase\obj\Debug\StoreDataBase.dll
+E:\Code\WPF\ProWPF\StoreDataBase\obj\Debug\StoreDataBase.pdb
+E:\Code\WPF\ProWPF\StoreDataBase\bin\Debug\Store.xsc
+E:\Code\WPF\ProWPF\StoreDataBase\bin\Debug\Store.xss
+E:\Code\WPF\ProWPF\StoreDataBase\bin\Debug\Images\360.gif
+E:\Code\WPF\ProWPF\StoreDataBase\bin\Debug\Images\362.gif
+E:\Code\WPF\ProWPF\StoreDataBase\bin\Debug\Images\397.gif
+E:\Code\WPF\ProWPF\StoreDataBase\bin\Debug\Images\401.gif
+E:\Code\WPF\ProWPF\StoreDataBase\bin\Debug\Images\404.gif
+E:\Code\WPF\ProWPF\StoreDataBase\bin\Debug\Images\image.gif

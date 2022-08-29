@@ -1,0 +1,57 @@
+﻿<Window x:Class="ProWPF.Advanced.Expanders"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        Title="扩展区域" Height="450" Width="800">
+
+    <Window.Resources>
+        <sys:String x:Key="words">
+            昨夜雨疏风骤，浓睡不消残酒。试问卷帘人，却道海棠依旧。知否，知否？应是绿肥红瘦。
+        </sys:String>
+
+        <Style TargetType="Expander">
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="Padding" Value="4"/>
+            <Setter Property="BorderBrush" Value="Green"/>
+            <Setter Property="BorderThickness" Value="2"/>
+        </Style>
+    </Window.Resources>
+    
+    <DockPanel Margin="4" TextBlock.FontSize="20" LastChildFill="True">
+        <TextBlock Margin="4" DockPanel.Dock="Top" TextWrapping="Wrap">
+            Expanded和Collapsed用于显示和隐藏内容前触发；
+            <LineBreak/>
+            Grid 列设置比例改变尺寸，行设置自动改变尺寸。这样设置只是在垂直方向上进行延长，水平方向上无影响。
+        </TextBlock>
+
+        <Grid Margin="4">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Expander Header="Region One">
+                <TextBlock TextWrapping="Wrap" Text="{StaticResource words}"/>
+            </Expander>
+
+            <Expander Grid.Column="1" Header="Region Two" ExpandDirection="Right">
+                <TextBlock TextWrapping="Wrap" Text="{StaticResource words}"/>
+            </Expander>
+
+            <Expander Grid.Row="1" Grid.Column="0" Header="Region Three" ExpandDirection="Up">
+                <TextBlock TextWrapping="Wrap" Text="{StaticResource words}"/>
+            </Expander>
+
+            <Expander Grid.Row="1" Grid.Column="1" Header="Region Four" ExpandDirection="Left">
+                <TextBlock TextWrapping="Wrap" Text="{StaticResource words}"/>
+            </Expander>
+        </Grid>
+    </DockPanel>
+</Window>

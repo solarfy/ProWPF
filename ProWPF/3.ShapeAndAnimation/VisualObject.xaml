@@ -1,0 +1,95 @@
+﻿<Window x:Class="ProWPF.ShapeAndAnimation.VisualObject"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProWPF.ShapeAndAnimation"
+        xmlns:ctrls="clr-namespace:CustomControlLibrary;assembly=CustomControlLibrary"
+        mc:Ignorable="d"
+        Title="可视化对象" Height="450" Width="800">
+
+    <Grid>
+        <TabControl>
+            <TabItem Header="Visual">
+                <TextBlock Margin="8" TextWrapping="Wrap">
+                    可视化对象：希望构建用于绘制矢量图的程序，或者创建效率更高的包含数千个形状并可以分别操作这些形状的画布。
+                    <LineBreak/>
+                    Visual对象是极轻量级的要素，比Geometry对象和Path对象需要的开销更小。
+                    <LineBreak/>
+                    Visual是抽象类，他有几个子类UIElement类（WPF元素模型的根）、Viewport3DVisual类（显示3D内容）、ContainerVisual类（包含其他可视化对象的基本容器）
+                    <LineBreak/>
+                    最有用的是继承自ContainerVisual类的DrawingVisual类，使用该类绘制内容，需要使用DrawingVisual.RenderOpen()方法，
+                    该方法返回一个可用于定义可视化内容的DrawingContext对象。绘制完毕后需调用DrawContext.Close()方法，完整的图画被存储在可视化对象中，并
+                    通过只读的DrawingVisual.Drawing属性提供这些图画。
+                    <LineBreak/>
+                    <LineBreak/>
+                    显示可视化对象，需借助WPF元素，为使可视化对象在WPF元素中驻留需调用AddVisualChild()和AddLogicalChild()方法进行注册；
+                    重写VisualChlidCount属性并返回已增加了的可视化对象的数量；重写GetVisualChild()方法，当通过索引请求可视化对象时，添加返回可视化对象所需的代码。
+                    <LineBreak/>
+                    注：当重写VisualChildrenCount属性和GetVisualChild()方法时，本质上是劫持了那个元素。如果使用的是能够包含嵌套元素的内容控件、装饰元素或面板，这些元素将不会被渲染，只会看到添加的可视化元素。
+                    <LineBreak/>
+                    <LineBreak/>
+                    命中测试，查找位于可单击位置的可视化对象。使用VisualTreeHelper.HitTest()静态方法。
+                    <LineBreak/>
+                    复杂的命中测试，需要创建回调函数，之后VisualTreeHelper类自上而下遍历所有的可视化对象（与创建它们的顺便相反），
+                    没当发现匹配对象时，就会调用回调函数并传递相关细节。然后可选择停止查找，或继续查找知道遍历完所有的可视化对象为止。
+                    <LineBreak/>
+                    命中测试结果HitTestResult对象可根据命中测试类型将它转化成两个任意派生类。基于点的PointHitTestResutl对象和基于几何图形的GeometryHitTestResult。
+                </TextBlock>
+            </TabItem>
+
+            <TabItem Header="VisualLayer">
+                <Grid Margin="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <ToolBarTray Orientation="Vertical">
+                        <ToolBar>
+                            <RadioButton x:Name="rbSelectMove" Padding="4" Margin="4">
+                                <StackPanel>
+                                    <Image Width="35" Height="35" Source="/Images/pointer.png"/>
+                                    <TextBlock Text="Select Move" Margin="0,4,0,0"/>
+                                </StackPanel>
+                            </RadioButton>
+
+                            <RadioButton x:Name="rbAdd" Padding="4" Margin="4" IsChecked="True">
+                                <StackPanel>
+                                    <Rectangle Width="32" Height="32" Stroke="SteelBlue" StrokeThickness="3" Fill="AliceBlue"></Rectangle>
+                                    <TextBlock Margin="0,4,0,0">Add Square</TextBlock>
+                                </StackPanel>
+                            </RadioButton>
+
+                            <RadioButton x:Name="rbDelete" Padding="4" Margin="4">
+                                <StackPanel>
+                                    <Path Stroke="SteelBlue" StrokeThickness="3" StrokeEndLineCap="Round" StrokeStartLineCap="Round" HorizontalAlignment="Center">
+                                        <Path.Data>
+                                            <PathGeometry Figures="M 0,2 L 28,30 M 0,30 L 28,2"/>
+                                        </Path.Data>
+                                    </Path>
+                                    <TextBlock Margin="0,4,0,0">Delete Square</TextBlock>
+                                </StackPanel>
+                            </RadioButton>
+
+                            <RadioButton x:Name="rbSelectMultiple" Padding="4" Margin="4">
+                                <StackPanel>
+                                    <Image Source="/Images/pointer.png" Width="35" Height="35"></Image>
+                                    <TextBlock Margin="0,4,0,0">Select Multiple</TextBlock>
+                                </StackPanel>
+                            </RadioButton>
+                        </ToolBar>
+                    </ToolBarTray>
+
+                    <!--将画布设置成白色（而不是透明），可拦截画布表面上的所有鼠标单击事件-->
+                    <ctrls:DrawingCanvas x:Name="drawingCanvas" Grid.Column="1" ShowGridLines="False" ClipToBounds="True" Background="White"                                         
+                                         MouseLeftButtonDown="DrawingCanvas_MouseLeftButtonDown"
+                                         MouseLeftButtonUp="DrawingCanvas_MouseLeftButtonUp"
+                                         MouseMove="DrawingCanvas_MouseMove"/>
+
+                </Grid>
+            </TabItem>
+        </TabControl>
+        
+    </Grid>
+</Window>

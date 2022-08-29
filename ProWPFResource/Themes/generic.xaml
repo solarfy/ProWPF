@@ -1,0 +1,10 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:ProWPFResource">
+
+    <!--注：此处的ImageSource必须明确指示图像是程序集的一部分，这是必要的步骤，因为将在其他程序集中使用该资源。如果只是使用图像名，应用程序集中只会在自己的资源中查找图像-->
+    <ImageBrush x:Key="{ComponentResourceKey TypeInTargetAssembly={x:Type local:CustomResources}, ResourceId=SadTileBrush}"
+                TileMode="Tile" ViewportUnits="Absolute" Viewport="0 0 32 32" Opacity="0.5"
+                ImageSource="Pro_WPF_Framework;component/Images/sadface.png"/>
+
+</ResourceDictionary>

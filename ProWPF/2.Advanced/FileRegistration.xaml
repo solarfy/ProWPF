@@ -1,0 +1,30 @@
+﻿<Window x:Class="ProWPF.Advanced.FileRegistration"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProWPF.Advanced"
+        mc:Ignorable="d"
+        Title="文件注册" Height="450" Width="800">
+    
+    <Grid Margin="4">
+        <TextBlock TextWrapping="Wrap">
+            文件注册（用指定应用程序打开指定后缀名的文件）
+            <LineBreak/>
+            手动注册：
+            <LineBreak/>
+            1.右击该文件，选择Open With | Choose Default Program菜单项。
+            <LineBreak/>
+            2.OpenWith对话框中单击Browse按钮，找到指定的应用程序.exe文件并双击
+            <LineBreak/>
+            编码方式：
+            <LineBreak/>
+            使用了Mincrosoft.Win32名称空间中的类注册
+            <LineBreak/>
+            注册过程只需执行一次，注册以后只需双击指定的扩展名文件，就会打开指定的.exe应用程序。
+            <LineBreak/>
+            一般编辑注册表都需要用户提升权限，可通过在项目中添加一个应用程序清单文件（Application Manifest File）（.manifest）改变用户权限。
+            实际使用中可在单独的执行程序中放置需要更高权限的代码，然后在需要时调用这个可执行程序。
+        </TextBlock>
+    </Grid>
+</Window>

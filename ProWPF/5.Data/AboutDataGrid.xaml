@@ -1,0 +1,137 @@
+﻿<Window x:Class="ProWPF.Data.AboutDataGrid"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProWPF.Data"   
+        xmlns:converter="clr-namespace:ProWPF.Converters"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:col="clr-namespace:System.Collections;assembly=mscorlib"        
+        mc:Ignorable="d"
+        Title="关于DataGrid" Height="450" Width="800" Loaded="Window_Loaded">
+
+    <Window.Resources>
+        <col:ArrayList x:Key="Categories">
+            <sys:String>General</sys:String>
+            <sys:String>Communications</sys:String>
+            <sys:String>Deception</sys:String>
+            <sys:String>Munitions</sys:String>
+            <sys:String>Protection</sys:String>
+            <sys:String>Tools</sys:String>
+            <sys:String>Travel</sys:String>
+        </col:ArrayList>
+
+        <local:ImagePathConverter x:Key="ImagePathConverter"/>
+    </Window.Resources>
+    
+    <TabControl>
+        <TabItem Header="属性介绍">
+            <DataGrid Margin="8" ItemsSource="{x:Static local:DataGridProperties.Properties}" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="名称">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=Name}" VerticalAlignment="Center" Margin="4,6"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="说明" Width="*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock TextWrapping="Wrap" Text="{Binding Path=Description}" VerticalAlignment="Center" Margin="4,6"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </TabItem>
+
+        <TabItem Header="定义列">
+            <DockPanel LastChildFill="True">
+                <TextBlock DockPanel.Dock="Top" Margin="8" TextWrapping="Wrap">
+                    使用CanUserResizeColumns属性或单个列的CanUserResize属性，是否允许用户改变列的尺寸。
+                    <LineBreak/>
+                    使用CanUserRecorderColumns属性或单个列的CanUserRecorder属性，是否允许用户重排序。
+                    <LineBreak/>
+                    冻结的列始终位于DataGrid控件的左边，将DataGrid.FrozenColumnCount属性设置大于0的数，例如，数值1只冻结第一列，数值2冻结第一、二两列。
+                </TextBlock>
+
+                <DataGrid Margin="8" ItemsSource="{x:Static local:DataGridProperties.Columns}" AutoGenerateColumns="False">
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Header="名称">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=Name}" VerticalAlignment="Center" Margin="4,6"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="说明" Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock TextWrapping="Wrap" Text="{Binding Path=Description}" VerticalAlignment="Center" Margin="4,6"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </DockPanel>
+        </TabItem>
+
+        <TabItem Header="DataGrid">
+            <DockPanel LastChildFill="True">
+                <StackPanel Margin="8" Orientation="Horizontal" DockPanel.Dock="Top" HorizontalAlignment="Left" ButtonBase.Click="CheckBox_Click">
+                    <StackPanel.Resources>
+                        <Style TargetType="CheckBox">
+                            <Setter Property="Margin" Value="4"/>
+                            <Setter Property="VerticalContentAlignment" Value="Center"/>
+                            <Setter Property="IsChecked" Value="True"/>
+                        </Style>
+                    </StackPanel.Resources>
+                    <CheckBox Content="产品" Tag="0"/>
+                    <CheckBox Content="单价" Tag="1"/>
+                    <CheckBox Content="型号" Tag="2"/>
+                    <CheckBox Content="类别" Tag="3"/>
+                    <CheckBox Content="图片" Tag="4"/>
+                    <CheckBox Content="描述" Tag="5"/>
+                </StackPanel>
+            
+                <DataGrid x:Name="dgProducts" Margin="8" AutoGenerateColumns="False" FrozenColumnCount="2"
+                          LoadingRow="DataGridProducts_LoadingRow" RowDetailsVisibilityMode="VisibleWhenSelected">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="产品" Binding="{Binding Path=ModelName}"/>
+                        <DataGridTextColumn Header="单价" Binding="{Binding Path=UnitCost, StringFormat={}{0:C}}"/>
+                        <DataGridTextColumn Header="型号" Binding="{Binding Path=ModelNumber}"/>
+                        <!--<DataGridComboBoxColumn Header="类别" SelectedItemBinding="{Binding Path=CategoryName}" ItemsSource="{StaticResource Categories}"/>-->
+                        <!--此处注意区别SelectedValueBinding与SelectedItemBinding。SelectedValueBinding指定链接的Product对象中的字段，DisplayMemberPath指定Category对象中显示哪个文本，
+                        SelectedValuePath指定从Category对象中提取什么数据-->
+                        <DataGridComboBoxColumn x:Name="categoryColumn" Header="类别" DisplayMemberPath="CategoryName" SelectedValuePath="CategoryID"
+                                                SelectedValueBinding="{Binding Path=CategoryID}"/>
+                        <DataGridTemplateColumn Header="图片">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Image Stretch="None" Source="{Binding Path=ProductImagePath,Converter={StaticResource ImagePathConverter}}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <!--此处使用ElementStyle属性，设置单元格元素样式，使得内容支持换行，为了达到换行效果需设置行高度RowHeight属性-->
+                        <DataGridTextColumn Header="描述" Binding="{Binding Path=Description}" MaxWidth="500">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextWrapping" Value="Wrap"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                    </DataGrid.Columns>
+                    <!--行细节-->
+                    <DataGrid.RowDetailsTemplate>
+                        <DataTemplate>
+                            <Border MaxWidth="760" Margin="10" BorderBrush="SteelBlue" BorderThickness="3" CornerRadius="5" HorizontalAlignment="Left">
+                                <TextBlock Text="{Binding Path=Description}" TextWrapping="Wrap" FontStyle="Italic"/>
+                            </Border>
+                        </DataTemplate>
+                    </DataGrid.RowDetailsTemplate>
+                </DataGrid>
+            </DockPanel>
+        </TabItem>
+    </TabControl>
+</Window>

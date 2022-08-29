@@ -1,0 +1,131 @@
+﻿<Window x:Class="ProWPF.Data.AboutListView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProWPF.Data"        
+        xmlns:ctrls="clr-namespace:CustomControlLibrary;assembly=CustomControlLibrary"
+        mc:Ignorable="d"
+        Title="关于ListView" Height="450" Width="800" Loaded="Window_Loaded">
+
+    <Window.Resources>
+        <local:ImagePathConverter x:Key="ImagePathConverter"/>
+
+        <GridView x:Key="GridView">
+            <GridView.ColumnHeaderContainerStyle>
+                <Style TargetType="GridViewColumnHeader">
+                    <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                </Style>
+            </GridView.ColumnHeaderContainerStyle>
+            <GridView.Columns>
+                <GridViewColumn Header="名称" DisplayMemberBinding="{Binding Path=ModelName}"/>
+                <GridViewColumn Header="型号" DisplayMemberBinding="{Binding Path=ModelNumber}"/>
+                <GridViewColumn Header="描述" Width="300">
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                            <!--为了达到换行效果，使用Width属性限制列宽-->
+                            <TextBlock Text="{Binding Path=Description}" TextWrapping="Wrap"/>
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                </GridViewColumn>
+                <GridViewColumn Header="图片">
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding Path=ProductImagePath, Converter={StaticResource ImagePathConverter}}"/>
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                </GridViewColumn>
+                <GridViewColumn Header="单价" DisplayMemberBinding="{Binding Path=UnitCost, StringFormat={}{0:C}}"/>
+            </GridView.Columns>
+        </GridView>
+
+        <ctrls:TileView x:Key="ImageView" SelectedBackground="SkyBlue" SelectedBorderBrush="SpringGreen">
+            <ctrls:TileView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Width="150" VerticalAlignment="Top">
+                        <Image Source="{Binding Path=ProductImagePath,Converter={StaticResource ImagePathConverter}}"/>
+                        <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" Text="{Binding Path=ModelName}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ctrls:TileView.ItemTemplate>
+        </ctrls:TileView>
+
+        <ctrls:TileView x:Key="ImageDetailView" SelectedBackground="ForestGreen" SelectedBorderBrush="Orange">
+            <ctrls:TileView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="Col2"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Image Margin="5" Width="100" Source="{Binding Path=ProductImagePath,Converter={StaticResource ImagePathConverter}}"/>
+
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <TextBlock FontWeight="Bold" Text="{Binding Path=ModelName}"/>
+                            <TextBlock Text="{Binding Path=ModelNumber}"/>
+                            <TextBlock Text="{Binding Path=UnitCost, StringFormat={}{0:C}}"/>
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </ctrls:TileView.ItemTemplate>
+        </ctrls:TileView>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Margin="8" TextWrapping="Wrap">
+            如果同时设置了DisplayMember和CellTemplate属性，GridViewColumn就会使用DisplayMember属性为单元格设置内容并完全忽略模板。
+        </TextBlock>
+
+        <StackPanel Orientation="Horizontal" Margin="8" Grid.Row="1">
+            <TextBlock Text="选择视图" VerticalAlignment="Center" Margin="0,0,10,0"/>
+            <ComboBox x:Name="cboxView" IsReadOnly="True" IsEditable="False" SelectedIndex="0">
+                <ComboBoxItem Content="GridView"/>
+                <ComboBoxItem Content="ImageView"/>
+                <ComboBoxItem Content="ImageDetailView"/>
+            </ComboBox>
+        </StackPanel>
+
+        <ListView x:Name="lstvProducts" Grid.Row="2" Margin="8">
+            <ListView.View>
+                <GridView>
+                    <GridView.ColumnHeaderContainerStyle>
+                        <Style TargetType="GridViewColumnHeader">
+                            <Setter Property="FontWeight" Value="Bold"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        </Style>
+                    </GridView.ColumnHeaderContainerStyle>
+                    <GridView.Columns>
+                        <GridViewColumn Header="名称" DisplayMemberBinding="{Binding Path=ModelName}"/>
+                        <GridViewColumn Header="型号" DisplayMemberBinding="{Binding Path=ModelNumber}"/>
+                        <GridViewColumn Header="描述" Width="300">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <!--为了达到换行效果，使用Width属性限制列宽-->
+                                    <TextBlock Text="{Binding Path=Description}" TextWrapping="Wrap"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="图片">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Image Source="{Binding Path=ProductImagePath, Converter={StaticResource ImagePathConverter}}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="单价" DisplayMemberBinding="{Binding Path=UnitCost, StringFormat={}{0:C}}"/>
+                    </GridView.Columns>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+
+
+</Window>

@@ -1,0 +1,45 @@
+﻿<Window x:Class="ProWPF.Basic.SharedSizeGroup"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProWPF.Basic"
+        mc:Ignorable="d"
+        Title="共享尺寸组" Height="450" Width="800" xml:space="preserve">
+    
+    <Grid Grid.IsSharedSizeScope="True" UseLayoutRounding="True" Background="LightYellow">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" ShowGridLines="True">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition SharedSizeGroup="A"/>                
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            
+            <TextBlock Grid.Column="0" Text="A vert long bit of text"/>
+            <TextBlock Grid.Column="1" Text="More text"/>
+            <TextBox Grid.Column="2" Text="A text box"/>
+            
+            <!--布局分割-->
+            <GridSplitter Grid.Column="1" Width="4" ShowsPreview="True"
+                          HorizontalAlignment="Right" VerticalAlignment="Stretch" Background="Silver"/>
+        </Grid>
+
+        <Label Grid.Row="1" FontSize="20" Content="Some text in between the two grids ..."/>
+
+        <Grid Grid.Row="2" ShowGridLines="True" Background="LightYellow">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition SharedSizeGroup="A"/>                 
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>    
+            
+            <TextBlock Grid.Column="0" Text="An event longer bit of text over here"/>                    
+            <TextBox Grid.Column="1" Text="A text box"/>            
+        </Grid>               
+    </Grid>
+</Window>

@@ -1,0 +1,85 @@
+﻿<Window x:Class="ProWPF.Advanced.DateControl"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:converters="clr-namespace:ProWPF.Converters"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        Title="日期控件" Height="450" Width="800">
+
+    <Window.Resources>
+        <converters:CheckedToEnumConverter x:Key="DisplayModeConverter" TargetEnum="{x:Type CalendarMode}"/>
+
+        <sys:DateTime x:Key="displayStartTime">
+            2022.5.1
+        </sys:DateTime>
+
+        <sys:DateTime x:Key="displayEndTime">
+            2022.5.31
+        </sys:DateTime>
+        
+        <x:Array Type="sys:DateTime" x:Key="blackoutDates">
+            <sys:DateTime>2022.5.19</sys:DateTime>
+            <sys:DateTime>2022.5.20</sys:DateTime>
+            <sys:DateTime>2022.5.24</sys:DateTime>
+            <sys:DateTime>2022.5.25</sys:DateTime>
+            <sys:DateTime>2022.5.26</sys:DateTime>
+        </x:Array>
+    </Window.Resources>
+    
+    <UniformGrid Columns="2" Margin="4">
+        <DockPanel Margin="4" LastChildFill="True">
+            <Calendar x:Name="calendar" Margin="4" DockPanel.Dock="Top" DisplayDate="{StaticResource displayStartTime}" FirstDayOfWeek="Monday"
+                      IsTodayHighlighted="True" DisplayMode="Month" SelectionMode="MultipleRange"
+                      SelectedDatesChanged="Calendar_SelectedDatesChanged">
+            </Calendar>
+
+            <GroupBox Header="日历显示格式" Margin="4" DockPanel.Dock="Top">
+                <StackPanel Margin="4" Orientation="Horizontal">
+                    <RadioButton Margin="4" ToolTip="年代" 
+                                     IsChecked="{Binding ElementName=calendar, Path=DisplayMode, ConverterParameter=Decade, Converter={StaticResource DisplayModeConverter}, Mode=TwoWay}">Decade</RadioButton>
+                    <RadioButton Margin="4" ToolTip="月份"
+                                     IsChecked="{Binding ElementName=calendar, Path=DisplayMode, ConverterParameter=Month, Converter={StaticResource DisplayModeConverter}, Mode=TwoWay}">Month</RadioButton>
+                    <RadioButton Margin="4" ToolTip="年份"
+                                     IsChecked="{Binding ElementName=calendar, Path=DisplayMode, ConverterParameter=Year, Converter={StaticResource DisplayModeConverter}, Mode=TwoWay}">Year</RadioButton>
+
+                </StackPanel>
+            </GroupBox>
+
+            <TextBlock Margin="4" Text="选中的日期：（编码过滤无法选中周一）" DockPanel.Dock="Top"/>
+
+            <ListBox Margin="4" xml:lang="zh-cn" ItemsSource="{Binding ElementName=calendar, Path=SelectedDates}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type sys:DateTime}">
+                        <TextBlock x:Name="PART_text" Text="{Binding StringFormat=D}"/>
+
+                        <DataTemplate.Triggers>
+                            <DataTrigger Binding="{Binding DayOfWeek}" Value="Saturday">
+                                <Setter TargetName="PART_text" Property="Foreground" Value="Orange"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding DayOfWeek}" Value="Sunday">
+                                <Setter TargetName="PART_text" Property="Foreground" Value="Red"/>
+                            </DataTrigger>
+                        </DataTemplate.Triggers>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+        </DockPanel>
+
+        <StackPanel Margin="4">
+            <DatePicker Margin="4" DateValidationError="DatePicker_DateValidationError"/>
+
+            <TextBlock x:Name="textError" Margin="4" TextWrapping="Wrap"/>
+
+            <TextBlock Margin="4" TextWrapping="Wrap" FontSize="12" Foreground="Red">
+                * BlackoutDates 保存在日历中将被禁用或不能选择的日期集合；
+                为阻止选择过去的日期，可调用BlackoutDates.AddDatesPast()方法。
+                <LineBreak/>
+                *（xml:lang="zh-cn" 中文）
+            </TextBlock>
+        </StackPanel>
+
+    </UniformGrid>
+</Window>

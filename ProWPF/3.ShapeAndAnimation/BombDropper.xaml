@@ -1,0 +1,47 @@
+﻿<Window x:Class="ProWPF.ShapeAndAnimation.BombDropper"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProWPF.ShapeAndAnimation"
+        mc:Ignorable="d"
+        Title="拦截炸弹" Height="450" Width="800">
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        
+        <Border Grid.Column="0" BorderBrush="SteelBlue" BorderThickness="1" Margin="5">
+            <Canvas x:Name="canvas" MinWidth="50" SizeChanged="Canvas_SizeChanged">
+                <Canvas.Background>
+                    <RadialGradientBrush RadiusX="1" RadiusY="1" Center="0 0.5" GradientOrigin="0.3 0">
+                        <GradientStop Color="LawnGreen" Offset="0"/>
+                        <GradientStop Color="AliceBlue" Offset="0.7"/>
+                    </RadialGradientBrush>
+                </Canvas.Background>
+            </Canvas>
+        </Border>
+
+        <Border Grid.Column="1" BorderBrush="SteelBlue" BorderThickness="1" Margin="5">
+            <Border.Background>
+                <RadialGradientBrush GradientOrigin="1 0.7" Center="1, 0.7" RadiusX="1" RadiusY="1">
+                    <GradientStop Color="Orange" Offset="0"/>
+                    <GradientStop Color="AliceBlue" Offset="1"/>
+                </RadialGradientBrush>
+            </Border.Background>
+
+            <StackPanel Margin="15" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock FontSize="35" Foreground="Green">炸弹拯救者</TextBlock>
+                <TextBlock x:Name="txtblkRate" Margin="0,30,0,0" TextWrapping="Wrap"/>
+                <TextBlock x:Name="txtblkSpeed" Margin="0,30,0,0" TextWrapping="Wrap"/>
+                <TextBlock x:Name="txtblkState" Margin="0,30,0,0" TextWrapping="Wrap" Text="没有炸弹被投下"/>
+
+                <Button x:Name="btnStart" Padding="5" Margin="0,30" Width="80" Click="Start_Click">
+                    开始
+                </Button>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

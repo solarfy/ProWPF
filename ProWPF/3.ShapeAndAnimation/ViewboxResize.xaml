@@ -1,0 +1,100 @@
+﻿<Window x:Class="ProWPF.ShapeAndAnimation.ViewboxResize"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:converters="clr-namespace:ProWPF.Converters"   
+        mc:Ignorable="d"
+        Title="使用Viewbox控件缩放形状" Height="450" Width="800">
+    <Window.Resources>
+        <converters:CheckedToEnumConverter x:Key="CheckedToStretchDirectionConverter" TargetEnum="{x:Type StretchDirection}"/>
+        <converters:CheckedToEnumConverter x:Key="CheckedToStretchConverter" TargetEnum="{x:Type Stretch}"/>
+    </Window.Resources>
+    
+    <Grid Margin="4">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" Margin="4">
+            <StackPanel.Resources>
+                <Style TargetType="RadioButton">
+                    <Setter Property="Margin" Value="8,4"/>
+                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                </Style>
+            </StackPanel.Resources>
+            
+            <GroupBox Header="Viewbox-Stretch" Margin="8,4" Padding="4">
+                <StackPanel Orientation="Horizontal">
+                    <RadioButton IsChecked="{Binding ElementName=viewbox, Path=Stretch, ConverterParameter=Fill, Converter={StaticResource CheckedToStretchConverter}}">Fill</RadioButton>
+                    <RadioButton IsChecked="{Binding ElementName=viewbox, Path=Stretch, ConverterParameter=None, Converter={StaticResource CheckedToStretchConverter}}">None</RadioButton>
+                    <RadioButton IsChecked="{Binding ElementName=viewbox, Path=Stretch, ConverterParameter=Uniform, Converter={StaticResource CheckedToStretchConverter}}">Uniform(默认)</RadioButton>
+                    <RadioButton IsChecked="{Binding ElementName=viewbox, Path=Stretch, ConverterParameter=UniformToFill, Converter={StaticResource CheckedToStretchConverter}}">UniformToFill</RadioButton>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Header="Viewbox-StretchDirection" Margin="8,4" Padding="4">
+                <StackPanel Orientation="Horizontal">
+                    <RadioButton IsChecked="{Binding ElementName=viewbox, Path=StretchDirection, ConverterParameter=Both, Converter={StaticResource CheckedToStretchDirectionConverter}}">Both(默认)</RadioButton>
+                    <RadioButton IsChecked="{Binding ElementName=viewbox, Path=StretchDirection, ConverterParameter=DownOnly, Converter={StaticResource CheckedToStretchDirectionConverter}}" ToolTip="只会缩小而不会增长超过其原始尺寸的内容">DownOnly</RadioButton>
+                    <RadioButton IsChecked="{Binding ElementName=viewbox, Path=StretchDirection, ConverterParameter=UpOnly, Converter={StaticResource CheckedToStretchDirectionConverter}}" ToolTip="只会增长而不会收缩超过其原始尺寸的内容">UpOnly</RadioButton>
+                </StackPanel>
+            </GroupBox>
+        </StackPanel>
+
+        <TextBlock Grid.Row="1" Margin="4" TextWrapping="Wrap" Foreground="Red">
+            * 为使Viewbox元素执行其缩放工作，需要能够确定两部分信息：
+            <LineBreak/>
+            1.内容应当具有的原始尺寸--Viewbox不缩放时的尺寸（如下面的示例Canvas被明确设置300x400单位大小），Viewbox以该尺寸缩放图像。
+            <LineBreak/>
+            2.希望内容具有的新尺寸--根据Viewbox的Stretch属性，让其内部的内容使用所有可用的空间。
+        </TextBlock>
+        
+        <Viewbox x:Name="viewbox" Grid.Row="2" HorizontalAlignment="Left" Margin="4">
+            <!--必须明确设置Canvas尺寸值（Viewbox内容的原始尺寸），Viewbox元素根据可用空间和布局容器按比例改变尺寸-->
+            <Canvas Height="300" Width="480">
+                <Canvas.Background>
+                    <ImageBrush TileMode="Tile" ViewportUnits="Absolute" Viewport="0,0,60,60">
+                        <ImageBrush.ImageSource>
+                            <DrawingImage>
+                                <DrawingImage.Drawing>
+                                    <DrawingGroup>
+                                        <GeometryDrawing>
+                                            <GeometryDrawing.Geometry>
+                                                <RectangleGeometry Rect="0,0,10,10"/>
+                                            </GeometryDrawing.Geometry>
+                                            <GeometryDrawing.Brush>
+                                                <SolidColorBrush Color="Gray"/>
+                                            </GeometryDrawing.Brush>
+                                            <GeometryDrawing.Pen>
+                                                <Pen Brush="Gray" Thickness="1"/>
+                                            </GeometryDrawing.Pen>
+                                        </GeometryDrawing>
+                                        <GeometryDrawing>
+                                            <GeometryDrawing.Geometry>
+                                                <RectangleGeometry Rect="10,10,10,10"/>
+                                            </GeometryDrawing.Geometry>
+                                            <GeometryDrawing.Brush>
+                                                <SolidColorBrush Color="Gray"/>
+                                            </GeometryDrawing.Brush>
+                                            <GeometryDrawing.Pen>
+                                                <Pen Brush="Gray" Thickness="1"/>
+                                            </GeometryDrawing.Pen>
+                                        </GeometryDrawing>
+                                    </DrawingGroup>
+                                </DrawingImage.Drawing>
+                            </DrawingImage>
+                        </ImageBrush.ImageSource>
+                    </ImageBrush>
+                </Canvas.Background>
+                
+                <Rectangle Width="100" Height="50" Fill="Yellow" Stroke="Blue" Canvas.Left="10" Canvas.Top="10"
+                           RadiusX="10" RadiusY="50"/>
+                <Ellipse Fill="Yellow" Stroke="Blue" Canvas.Left="30" Canvas.Top="40" Width="100" Height="50"/>
+            </Canvas>
+        </Viewbox>
+    </Grid>
+</Window>

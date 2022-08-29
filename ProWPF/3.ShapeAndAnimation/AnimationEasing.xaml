@@ -1,0 +1,795 @@
+﻿<Window x:Class="ProWPF.ShapeAndAnimation.AnimationEasing"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProWPF.ShapeAndAnimation"
+        mc:Ignorable="d"
+        Title="动画缓动" Height="800" Width="1200">
+
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Width" Value="80"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Margin" Value="8"/>
+        </Style>
+
+        <Style TargetType="TextBlock" x:Key="NameStyle">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="8"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="TextBlock" x:Key="ContentStyle">
+            <Setter Property="Margin" Value="8"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+
+        <DoubleAnimation x:Key="RevertAnimation" BeginTime="0:0:5" Storyboard.TargetProperty="Width"/>
+    </Window.Resources>
+
+    <TabControl>
+        <TabItem Header="动画缓动">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!--#region BackEase -->
+                <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource NameStyle}" Text="BackEase"/>
+                <TextBlock Grid.Row="0" Grid.Column="1" Style="{StaticResource ContentStyle}">
+                    EaseIn模式下动画开始之前拉回动画，EaseOut模式下动画稍微超越然后拉回
+                </TextBlock>
+                <TextBlock Grid.Row="0" Grid.Column="2" Style="{StaticResource ContentStyle}">
+                    Amplitude属性决定了拉回和超越的量。默认为1，减小该属性值（大于0的任何值）以缩减效果，增加该属性值以放大效果
+                </TextBlock>
+                <StackPanel Grid.Row="0" Grid.Column="3" Orientation="Horizontal">
+                    <Button Content="EaseIn">
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard TargetProperty="Width">
+                                        <DoubleAnimation To="400">
+                                            <DoubleAnimation.EasingFunction>
+                                                <BackEase EasingMode="EaseIn" Amplitude="1"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <StaticResource ResourceKey="RevertAnimation"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+
+                    <Button Content="EaseOut">
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard TargetProperty="Width">
+                                        <DoubleAnimation To="400">
+                                            <DoubleAnimation.EasingFunction>
+                                                <BackEase EasingMode="EaseOut" Amplitude="1"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <StaticResource ResourceKey="RevertAnimation"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+
+                    <Button Content="EaseInOut">
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard TargetProperty="Width">
+                                        <DoubleAnimation To="400">
+                                            <DoubleAnimation.EasingFunction>
+                                                <BackEase EasingMode="EaseInOut" Amplitude="1"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <StaticResource ResourceKey="RevertAnimation"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+                </StackPanel>
+                <!--#endregion-->
+
+                <!--#region ElasticEase-->
+                <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource NameStyle}" Text="ElasticEase"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Style="{StaticResource ContentStyle}">
+            EaseIn模式下动画在其开始值周围前后摆动，逐渐增加； EaseOut模式下使动画超越最大值并前后摆动，逐渐减慢
+                </TextBlock>
+                <TextBlock Grid.Row="1" Grid.Column="2" Style="{StaticResource ContentStyle}">
+            Oscillation属性控制动画前后摆动的次数（默认为3），Springiness属性控制振荡增加或减弱的速度（默认值为3）
+                </TextBlock>
+                <StackPanel Grid.Row="1" Grid.Column="3" Orientation="Horizontal">
+                    <Button Content="EaseIn">
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard TargetProperty="Width">
+                                        <DoubleAnimation To="400">
+                                            <DoubleAnimation.EasingFunction>
+                                                <ElasticEase EasingMode="EaseIn" Oscillations="10" Springiness="3"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <StaticResource ResourceKey="RevertAnimation"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+
+                    <Button Content="EaseOut">
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard TargetProperty="Width">
+                                        <DoubleAnimation To="400">
+                                            <DoubleAnimation.EasingFunction>
+                                                <ElasticEase EasingMode="EaseOut" Oscillations="10" Springiness="3"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <StaticResource ResourceKey="RevertAnimation"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+
+                    <Button Content="EaseInOut">
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard TargetProperty="Width">
+                                        <DoubleAnimation To="400">
+                                            <DoubleAnimation.EasingFunction>
+                                                <ElasticEase EasingMode="EaseInOut" Oscillations="10" Springiness="3"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <StaticResource ResourceKey="RevertAnimation"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+                </StackPanel>
+                <!--#endregion-->
+
+                <!--#region BounceEase-->
+                <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource NameStyle}" Text="BounceEase"/>
+                <TextBlock Grid.Row="2" Grid.Column="1" Style="{StaticResource ContentStyle}">
+            执行ElasticEase缓动动画类似的效果，只是弹跳永远不会超越初始值和最终值
+                </TextBlock>
+                <TextBlock Grid.Row="2" Grid.Column="2" Style="{StaticResource ContentStyle}">
+            Bounce属性控制动画回跳的次数（默认值为2），Bounciness属性决定弹跳增加或减弱的速度（默认值为2）
+                </TextBlock>
+                <StackPanel Grid.Row="2" Grid.Column="3" Orientation="Horizontal">
+                    <Button Content="EaseIn">
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard TargetProperty="Width">
+                                        <DoubleAnimation To="400">
+                                            <DoubleAnimation.EasingFunction>
+                                                <BounceEase EasingMode="EaseIn" Bounces="10" Bounciness="2"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <StaticResource ResourceKey="RevertAnimation"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+
+                    <Button Content="EaseOut">
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard TargetProperty="Width">
+                                        <DoubleAnimation To="400">
+                                            <DoubleAnimation.EasingFunction>
+                                                <BounceEase EasingMode="EaseOut" Bounces="10" Bounciness="2"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <StaticResource ResourceKey="RevertAnimation"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+
+                    <Button Content="EaseInOut">
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard TargetProperty="Width">
+                                        <DoubleAnimation To="400">
+                                            <DoubleAnimation.EasingFunction>
+                                                <BounceEase EasingMode="EaseInOut" Bounces="10" Bounciness="2"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <StaticResource ResourceKey="RevertAnimation"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+                </StackPanel>
+                <!--#endregion-->
+
+                <!--#region CircleEase-->
+                <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource NameStyle}" Text="CircleEase"/>
+                <TextBlock Grid.Row="3" Grid.Column="1" Style="{StaticResource ContentStyle}">
+            使用圆函数加速（EaseIn模式）或减速（EaseOut）动画
+                </TextBlock>
+                <TextBlock Grid.Row="3" Grid.Column="2" Style="{StaticResource ContentStyle}">
+            无
+                </TextBlock>
+                <StackPanel Grid.Row="3" Grid.Column="3" Orientation="Horizontal">
+                    <Button Content="EaseIn">
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard TargetProperty="Width">
+                                        <DoubleAnimation To="400">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CircleEase EasingMode="EaseIn"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <StaticResource ResourceKey="RevertAnimation"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+
+                    <Button Content="EaseOut">
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard TargetProperty="Width">
+                                        <DoubleAnimation To="400">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CircleEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <StaticResource ResourceKey="RevertAnimation"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+
+                    <Button Content="EaseInOut">
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard TargetProperty="Width">
+                                        <DoubleAnimation To="400">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CircleEase EasingMode="EaseInOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <StaticResource ResourceKey="RevertAnimation"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+                </StackPanel>
+                <!--#endregion-->
+
+                <!--#region CubicEase-->
+                <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource NameStyle}" Text="CubicEase"/>
+                <TextBlock Grid.Row="4" Grid.Column="1" Style="{StaticResource ContentStyle}">
+            使用基于时间立方的函数加速（EaseIn模式）或减速（EaseOut模式）动画，其效果与CircleEase类似，但加速过程更缓和
+                </TextBlock>
+                <TextBlock Grid.Row="4" Grid.Column="2" Style="{StaticResource ContentStyle}">
+            无
+                </TextBlock>
+                <StackPanel Grid.Row="4" Grid.Column="3" Orientation="Horizontal">
+                    <Button Content="EaseIn">
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard TargetProperty="Width">
+                                        <DoubleAnimation To="400">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CubicEase EasingMode="EaseIn"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <StaticResource ResourceKey="RevertAnimation"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+
+                    <Button Content="EaseOut">
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard TargetProperty="Width">
+                                        <DoubleAnimation To="400">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CubicEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <StaticResource ResourceKey="RevertAnimation"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+
+                    <Button Content="EaseInOut">
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard TargetProperty="Width">
+                                        <DoubleAnimation To="400">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CubicEase EasingMode="EaseInOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <StaticResource ResourceKey="RevertAnimation"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+                </StackPanel>
+                <!--#endregion-->
+
+                <!--#region QuadraticEase-->
+                <TextBlock Grid.Row="5" Grid.Column="0" Style="{StaticResource NameStyle}" Text="QuadraticEase"/>
+                <TextBlock Grid.Row="5" Grid.Column="1" Style="{StaticResource ContentStyle}">
+            使用基于时间平方的函数加速（EaseIn模式）或减速（EaseOut模式）动画，其效果与CubicEase类似，但加速过程更缓和
+                </TextBlock>
+                <TextBlock Grid.Row="5" Grid.Column="2" Style="{StaticResource ContentStyle}">
+            无
+                </TextBlock>
+                <StackPanel Grid.Row="5" Grid.Column="3" Orientation="Horizontal">
+                    <Button Content="EaseIn">
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard TargetProperty="Width">
+                                        <DoubleAnimation To="400">
+                                            <DoubleAnimation.EasingFunction>
+                                                <QuadraticEase EasingMode="EaseIn"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <StaticResource ResourceKey="RevertAnimation"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+
+                    <Button Content="EaseOut">
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard TargetProperty="Width">
+                                        <DoubleAnimation To="400">
+                                            <DoubleAnimation.EasingFunction>
+                                                <QuadraticEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <StaticResource ResourceKey="RevertAnimation"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+
+                    <Button Content="EaseInOut">
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard TargetProperty="Width">
+                                        <DoubleAnimation To="400">
+                                            <DoubleAnimation.EasingFunction>
+                                                <QuadraticEase EasingMode="EaseInOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <StaticResource ResourceKey="RevertAnimation"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+                </StackPanel>
+                <!--#endregion-->
+
+                <!--#region QuarticEase-->
+                <TextBlock Grid.Row="6" Grid.Column="0" Style="{StaticResource NameStyle}" Text="QuarticEase"/>
+                <TextBlock Grid.Row="6" Grid.Column="1" Style="{StaticResource ContentStyle}">
+            使用基于时间4次方的函数加速（EaseIn模式）或减速（EaseOut模式）动画，其效果与CubicEase以及Quadratic类似，但加速过程更明显
+                </TextBlock>
+                <TextBlock Grid.Row="6" Grid.Column="2" Style="{StaticResource ContentStyle}">
+            无
+                </TextBlock>
+                <StackPanel Grid.Row="6" Grid.Column="3" Orientation="Horizontal">
+                    <Button Content="EaseIn">
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard TargetProperty="Width">
+                                        <DoubleAnimation To="400">
+                                            <DoubleAnimation.EasingFunction>
+                                                <QuarticEase EasingMode="EaseIn"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <StaticResource ResourceKey="RevertAnimation"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+
+                    <Button Content="EaseOut">
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard TargetProperty="Width">
+                                        <DoubleAnimation To="400">
+                                            <DoubleAnimation.EasingFunction>
+                                                <QuarticEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <StaticResource ResourceKey="RevertAnimation"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+
+                    <Button Content="EaseInOut">
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard TargetProperty="Width">
+                                        <DoubleAnimation To="400">
+                                            <DoubleAnimation.EasingFunction>
+                                                <QuarticEase EasingMode="EaseInOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <StaticResource ResourceKey="RevertAnimation"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+                </StackPanel>
+                <!--#endregion-->
+
+                <!--#region QuinticEase-->
+                <TextBlock Grid.Row="7" Grid.Column="0" Style="{StaticResource NameStyle}" Text="QuinticEase"/>
+                <TextBlock Grid.Row="7" Grid.Column="1" Style="{StaticResource ContentStyle}">
+            使用基于时间5次方的函数加速（EaseIn模式）或减速（EaseOut模式）动画，其效果与CubicEase、Quadratic以及QuinticEase类似，但加速过程更明显
+                </TextBlock>
+                <TextBlock Grid.Row="7" Grid.Column="2" Style="{StaticResource ContentStyle}">
+            无
+                </TextBlock>
+                <StackPanel Grid.Row="7" Grid.Column="3" Orientation="Horizontal">
+                    <Button Content="EaseIn">
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard TargetProperty="Width">
+                                        <DoubleAnimation To="400">
+                                            <DoubleAnimation.EasingFunction>
+                                                <QuinticEase EasingMode="EaseIn"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <StaticResource ResourceKey="RevertAnimation"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+
+                    <Button Content="EaseOut">
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard TargetProperty="Width">
+                                        <DoubleAnimation To="400">
+                                            <DoubleAnimation.EasingFunction>
+                                                <QuinticEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <StaticResource ResourceKey="RevertAnimation"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+
+                    <Button Content="EaseInOut">
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard TargetProperty="Width">
+                                        <DoubleAnimation To="400">
+                                            <DoubleAnimation.EasingFunction>
+                                                <QuinticEase EasingMode="EaseInOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <StaticResource ResourceKey="RevertAnimation"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+                </StackPanel>
+                <!--#endregion-->
+
+                <!--#region SineEase-->
+                <TextBlock Grid.Row="8" Grid.Column="0" Style="{StaticResource NameStyle}" Text="SineEase"/>
+                <TextBlock Grid.Row="8" Grid.Column="1" Style="{StaticResource ContentStyle}">
+            使用包含正弦计算的函数加速（EaseIn模式）或减速（EaseOut模式）动画，加速非常缓和，并且相对于其他各种缓动函数更接近线性插值
+                </TextBlock>
+                <TextBlock Grid.Row="8" Grid.Column="2" Style="{StaticResource ContentStyle}">
+            无
+                </TextBlock>
+                <StackPanel Grid.Row="8" Grid.Column="3" Orientation="Horizontal">
+                    <Button Content="EaseIn">
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard TargetProperty="Width">
+                                        <DoubleAnimation To="400">
+                                            <DoubleAnimation.EasingFunction>
+                                                <SineEase EasingMode="EaseIn"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <StaticResource ResourceKey="RevertAnimation"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+
+                    <Button Content="EaseOut">
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard TargetProperty="Width">
+                                        <DoubleAnimation To="400">
+                                            <DoubleAnimation.EasingFunction>
+                                                <SineEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <StaticResource ResourceKey="RevertAnimation"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+
+                    <Button Content="EaseInOut">
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard TargetProperty="Width">
+                                        <DoubleAnimation To="400">
+                                            <DoubleAnimation.EasingFunction>
+                                                <SineEase EasingMode="EaseInOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <StaticResource ResourceKey="RevertAnimation"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+                </StackPanel>
+                <!--#endregion-->
+
+                <!--#region PowerEase-->
+                <TextBlock Grid.Row="9" Grid.Column="0" Style="{StaticResource NameStyle}" Text="PowerEase"/>
+                <TextBlock Grid.Row="9" Grid.Column="1" Style="{StaticResource ContentStyle}">
+            使用幂函数加速（EaseIn模式）或减速（EaseOut模式）动画，根据指数p使用的值，可复制Cubic、Quadratic、Quartic以及Quintic函数效果
+                </TextBlock>
+                <TextBlock Grid.Row="9" Grid.Column="2" Style="{StaticResource ContentStyle}">
+            Power属性用于设置公式中的指数，默认值为2
+                </TextBlock>
+                <StackPanel Grid.Row="9" Grid.Column="3" Orientation="Horizontal">
+                    <Button Content="EaseIn">
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard TargetProperty="Width">
+                                        <DoubleAnimation To="400">
+                                            <DoubleAnimation.EasingFunction>
+                                                <PowerEase EasingMode="EaseIn"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <StaticResource ResourceKey="RevertAnimation"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+
+                    <Button Content="EaseOut">
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard TargetProperty="Width">
+                                        <DoubleAnimation To="400">
+                                            <DoubleAnimation.EasingFunction>
+                                                <PowerEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <StaticResource ResourceKey="RevertAnimation"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+
+                    <Button Content="EaseInOut">
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard TargetProperty="Width">
+                                        <DoubleAnimation To="400">
+                                            <DoubleAnimation.EasingFunction>
+                                                <PowerEase EasingMode="EaseInOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <StaticResource ResourceKey="RevertAnimation"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+                </StackPanel>
+                <!--#endregion-->
+
+                <!--#region ExponentialEase-->
+                <TextBlock Grid.Row="10" Grid.Column="0" Style="{StaticResource NameStyle}" Text="ExponentialEase"/>
+                <TextBlock Grid.Row="10" Grid.Column="1" Style="{StaticResource ContentStyle}">
+            使用指数函数f(t)=(e(at)-1)/(e(a-1))加速（EaseIn模式）或减速（EaseOut模式）动画
+                </TextBlock>
+                <TextBlock Grid.Row="10" Grid.Column="2" Style="{StaticResource ContentStyle}">
+            Exponent属性用于设置指数（默认值为2）
+                </TextBlock>
+                <StackPanel Grid.Row="10" Grid.Column="3" Orientation="Horizontal">
+                    <Button Content="EaseIn">
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard TargetProperty="Width">
+                                        <DoubleAnimation To="400">
+                                            <DoubleAnimation.EasingFunction>
+                                                <ExponentialEase EasingMode="EaseIn"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <StaticResource ResourceKey="RevertAnimation"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+
+                    <Button Content="EaseOut">
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard TargetProperty="Width">
+                                        <DoubleAnimation To="400">
+                                            <DoubleAnimation.EasingFunction>
+                                                <ExponentialEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <StaticResource ResourceKey="RevertAnimation"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+
+                    <Button Content="EaseInOut">
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard TargetProperty="Width">
+                                        <DoubleAnimation To="400">
+                                            <DoubleAnimation.EasingFunction>
+                                                <ExponentialEase EasingMode="EaseInOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <StaticResource ResourceKey="RevertAnimation"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+                </StackPanel>
+                <!--#endregion-->
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="自定义动画缓动">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Button Content="EaseIn">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Button.Click">
+                            <BeginStoryboard>
+                                <Storyboard TargetProperty="Width">
+                                    <DoubleAnimation To="400">
+                                        <DoubleAnimation.EasingFunction>
+                                            <local:RandomJitterEase EasingMode="EaseIn" Jitter="2000"/>
+                                        </DoubleAnimation.EasingFunction>
+                                    </DoubleAnimation>
+                                    <StaticResource ResourceKey="RevertAnimation"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+
+                <Button Content="EaseOut">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Button.Click">
+                            <BeginStoryboard>
+                                <Storyboard TargetProperty="Width">
+                                    <DoubleAnimation To="400">
+                                        <DoubleAnimation.EasingFunction>
+                                            <local:RandomJitterEase EasingMode="EaseOut" Jitter="2000"/>
+                                        </DoubleAnimation.EasingFunction>
+                                    </DoubleAnimation>
+                                    <StaticResource ResourceKey="RevertAnimation"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+
+                <Button Content="EaseInOut">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Button.Click">
+                            <BeginStoryboard>
+                                <Storyboard TargetProperty="Width">
+                                    <DoubleAnimation To="400">
+                                        <DoubleAnimation.EasingFunction>
+                                            <local:RandomJitterEase EasingMode="EaseInOut" Jitter="2000"/>
+                                        </DoubleAnimation.EasingFunction>
+                                    </DoubleAnimation>
+                                    <StaticResource ResourceKey="RevertAnimation"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+            </StackPanel>
+        </TabItem>
+    </TabControl>
+    
+</Window>

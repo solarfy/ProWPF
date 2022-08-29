@@ -1,0 +1,43 @@
+﻿<Window x:Class="ProWPF.ShapeAndAnimation.PerFrameAnimationsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProWPF.ShapeAndAnimation"
+        mc:Ignorable="d"
+        Title="帧动画视图" Height="450" Width="800">
+    
+    <TabControl>
+        <TabItem Header="基础">
+            <TextBlock TextWrapping="Wrap" Margin="8">
+                除基于属性的动画之外，WPF提供了一种创建基于帧的动画，这种方法只能使用代码。
+                使用静态的CompositionTarget.Rendering事件，触发该事件是为了给帧获取内容。一旦关联上该事件，WPF就开始不断地调用这个事件处理程序
+                （只要渲染代码执行速度足够快，WPF每秒将调用60次），当动画结束后，需分离事件处理程序。
+                <LineBreak/>
+                <Run Foreground="Red">
+                    * 基于帧的动画它不依赖于时间，动画可能在性能较好的计算机上运行的更快。为补偿这种效果，需要编写考虑当前时间的代码。
+                </Run>
+            </TextBlock>
+        </TabItem>
+
+        <TabItem Header="球体下落">
+            <Frame Source="../PerFrameAnimations/FallingBalls/FallingBalls.xaml"/>
+        </TabItem>
+
+        <TabItem Header="跟随鼠标1">
+            <Frame Source="../PerFrameAnimations/FollowMouse/FollowMouse.xaml"/>
+        </TabItem>
+
+        <TabItem Header="跟随鼠标2">
+            <Frame Source="../PerFrameAnimations/FollowMouseWithTime/FollowMouseWithTime.xaml"/>
+        </TabItem>
+
+        <TabItem Header="跟随鼠标的Canvas">
+            <Frame Source="../PerFrameAnimations/ReusableFollowMouse/FollowMouseCanvasExample.xaml"/>
+        </TabItem>
+
+        <TabItem Header="粒子效应">
+            <Frame Source="../PerFrameAnimations/ParticleEffect/ParticleEffectExample.xaml"/>
+        </TabItem>
+    </TabControl>
+</Window>

@@ -1,0 +1,97 @@
+﻿<Window x:Class="ProWPF.Data.AboutTreeView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProWPF.Data"
+        xmlns:model="clr-namespace:StoreDataBase.Model;assembly=StoreDataBase"
+        mc:Ignorable="d"
+        Title="关于TreeView" Height="450" Width="800" Loaded="Window_Loaded">
+
+    <TabControl>
+        <TabItem Header="关于TreeView">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Margin="8" TextWrapping="Wrap" Grid.ColumnSpan="3">
+                WPF数据绑定导航父-子关系，创建通过属性提供另一个集合的集合。本例中将Category对象集合绑定到一个列表控件，
+                然后将另一个列表控件绑定到当前选中的Category对象的Products属性，从而显示相关联的Product对象。
+                <LineBreak/>
+                使用HierarchicalDataTemplate对象设置TreeView.ItemTemplate属性，而不是DataTemplate对象。
+                HierachicalDataTemplate对象可以封装第二个模板，然后从第一个模板中提取项的集合。通过设置
+                ItemSource属性，指示该属性具有子项，并设置ItemTemplate属性，指示每个子项的格式。
+                <LineBreak/>
+                当使用DataSet对象时，WPF数据绑定系统提供了内置支持，即将第二层的ItemSource指定DataRelation对象名称，本例中使用的是FK_Categories_Products。
+                </TextBlock>
+
+                <GroupBox Grid.Row="1" Header="根据数据位置进行分层" Margin="8">
+                    <TreeView x:Name="tvProducts" Margin="4">
+                        <TreeView.ItemTemplate>
+                            <HierarchicalDataTemplate ItemsSource="{Binding Path=Products}">
+                                <TextBlock Text="{Binding Path=CategoryName}"/>
+
+                                <HierarchicalDataTemplate.ItemTemplate>
+                                    <HierarchicalDataTemplate>
+                                        <TextBlock Text="{Binding Path=ModelName}"/>
+                                    </HierarchicalDataTemplate>
+                                </HierarchicalDataTemplate.ItemTemplate>
+                            </HierarchicalDataTemplate>
+                        </TreeView.ItemTemplate>
+                    </TreeView>
+                </GroupBox>
+
+                <GroupBox Grid.Row="1" Margin="8" Grid.Column="1" Header="根据数据类型进行分层">
+                    <TreeView Margin="4" ItemsSource="{Binding ElementName=tvProducts,Path=ItemsSource}">
+                        <TreeView.Resources>
+                            <HierarchicalDataTemplate DataType="{x:Type model:Category}" ItemsSource="{Binding Path=Products}">
+                                <TextBlock Text="{Binding CategoryName}"/>
+                            </HierarchicalDataTemplate>
+
+                            <HierarchicalDataTemplate DataType="{x:Type model:Product}">
+                                <TextBlock Text="{Binding ModelName}"/>
+                            </HierarchicalDataTemplate>
+                        </TreeView.Resources>
+                    </TreeView>
+                </GroupBox>
+
+                <GroupBox Grid.Row="1" Grid.Column="2" Margin="8" Header="使用DataSet对象">
+                    <TreeView x:Name="tvProductDS" Margin="4">
+                        <TreeView.ItemTemplate>
+                            <HierarchicalDataTemplate ItemsSource="{Binding Path=FK_Categories_Products}">
+                                <TextBlock Text="{Binding Path=CategoryName}"/>
+
+                                <HierarchicalDataTemplate.ItemTemplate>
+                                    <HierarchicalDataTemplate>
+                                        <TextBlock Text="{Binding Path=ModelName}"/>
+                                    </HierarchicalDataTemplate>
+                                </HierarchicalDataTemplate.ItemTemplate>
+                            </HierarchicalDataTemplate>
+                        </TreeView.ItemTemplate>
+                    </TreeView>
+                </GroupBox>
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="即时创建节点">
+            <DockPanel LastChildFill="True">
+                <TextBlock Margin="8" TextWrapping="Wrap" DockPanel.Dock="Top">
+                    使用TreeViewItem对象的Expanded事件和Collapsed事件，即是填充节点或丢弃节点。
+                    <LineBreak/>
+                    占位符，用于确定用户是否以及展开了这个文件夹以查看内容。可确保节点处于可展开状态。如果目录没有包含任何子文件夹，那么当用户试图展开
+                    它时，展开图标就会消失--这与Windows资源管理器类似。
+                </TextBlock>
+
+                <TreeView x:Name="treeFileSystem" Margin="8" TreeViewItem.Expanded="Item_Expanded"/>
+            </DockPanel>
+        </TabItem>
+    </TabControl>
+    
+</Window>

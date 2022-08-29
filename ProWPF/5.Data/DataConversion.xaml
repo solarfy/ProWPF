@@ -1,0 +1,173 @@
+﻿<Window x:Class="ProWPF.Data.DataConversion"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProWPF.Data"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        Title="数据转换" Height="450" Width="800" Loaded="Window_Loaded">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <GroupBox Header="列表项的字符串格式">
+            <ListBox x:Name="lstProducts" Margin="4" DisplayMemberPath="UnitCost" ItemStringFormat="{}{0:C}" SelectedIndex="0"/>
+        </GroupBox>
+
+        <TabControl Grid.Column="1" DataContext="{Binding ElementName=lstProducts, Path=SelectedValue}" Margin="4">
+            <TabItem Header="字符串格式化">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Margin="8" TextWrapping="Wrap">
+                    使用Binding.StringFormat属性。控件即将显示之前，WPF使用格式字符串将原始文本转换为显示值。
+                    同样的，WPF在大多数情况下将使用该字符串进行反向转换，获取所有编辑后的数据并使用编辑后的数据更新属性。
+                    <LineBreak/>
+                    当设置Binding.StringFormat属性时，使用标准的.NET格式字串，具体形式为{0:C}。其中0表示第一个数值，C引用希望应用的格式字符串--本例使用的是货币格式。
+                    <LineBreak/>
+                    StringFormat属性的值如果是以花括号{}开头，需要在开始处使用花括号对，否则XAML解析器可能会被{0:C}的或括号所迷惑。
+                    <LineBreak/>
+                    使用ItemsStringFormat属性设置基于项列表的字符串格式。
+                    </TextBlock>
+
+                    <GroupBox Grid.Row="1" Header="StringFormat 是花括号的">
+                        <TextBlock Text="{Binding Path=UnitCost, StringFormat={}{0:C}}" Margin="8"/>
+                    </GroupBox>
+
+                    <GroupBox Grid.Row="2" Header="StringFormat 开头不是花括号的">
+                        <TextBlock Text="{Binding Path=UnitCost, StringFormat=The value is {0:C}.}" Margin="8"/>
+                    </GroupBox>
+
+                    <GroupBox Grid.Row="3" Header="自定义的日期格式">
+                        <TextBlock Text="{Binding Source={x:Static sys:DateTime.Today}, StringFormat={}{0:yyyy/MM/dd}}" Margin="8"/>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="常用字符串格式">
+                <DataGrid Margin="8" ItemsSource="{x:Static local:CommonFormatString.Commons}" AutoGenerateColumns="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="类型" Binding="{Binding Type}"/>
+                        <DataGridTextColumn Header="格式字符串" Binding="{Binding Format}"/>
+                        <!--使最后一列填充剩余的表格宽，否则会凭空多出一列-->
+                        <DataGridTextColumn Header="示例" Binding="{Binding Example}" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+            </TabItem>
+
+            <TabItem Header="值转换器">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Margin="8" TextWrapping="Wrap">
+                    Binding.StringFormat属性是针对简单的、标准的格式化数字和日期而创建的。
+                    但对于一些复杂的数据，需借助于值转换器。
+                    <LineBreak/>
+                    将数据格式化为字符串表示形式。例如可将字符串转换成货币字符串
+                    <LineBreak/>
+                    创建特定类型的WPF对象。例如，读取一块二进制数据，并创建一副能绑定到Image元素的BitmapImage对象。
+                    <LineBreak/>
+                    根据绑定数据有条件地改变元素中的属性。例如，可创建值转换器，用于改变元素的背景色以突出显示位于特定范围内的数值。
+                    <LineBreak/>
+                    创建值转换器的4个步骤：
+                    <LineBreak/>
+                    1.实现IValueConverter接口的类。2.为该类声明添加ValueConversion特性，并指定目标数据类型。
+                    3.实现Converter()方法，该方法将原数据格式转换为显示格式。4.实现ConverterBack()方法，该方法将显示格式转换为原格式。
+                    </TextBlock>
+
+                    <GroupBox Grid.Row="1" Header="值转换器设置字符串的格式 + 应用条件格式化">
+                        <TextBox Margin="8">
+                            <!--字符串格式化-->
+                            <TextBox.Text>
+                                <Binding Path="UnitCost">
+                                    <Binding.Converter>
+                                        <local:PriceConverter/>
+                                    </Binding.Converter>
+                                </Binding>
+                            </TextBox.Text>
+
+                            <!--应用条件格式化-->
+                            <TextBox.Background>
+                                <Binding Path="UnitCost">
+                                    <Binding.Converter>
+                                        <local:PriceToBackgroundConverter HighlightBrush="Orange" DefaultBrush="{x:Null}" MinimumPriceToHighlight="50"/>
+                                    </Binding.Converter>
+                                </Binding>
+                            </TextBox.Background>
+                        </TextBox>
+                    </GroupBox>
+
+                    <GroupBox Grid.Row="2" Header="值转换器创建对象">
+                        <Image Margin="8" Height="100" Width="100">
+                            <Image.Source>
+                                <Binding Path="ProductImagePath">
+                                    <Binding.Converter>
+                                        <local:ImagePathConverter SuppressException="True"/>
+                                    </Binding.Converter>
+                                </Binding>
+                            </Image.Source>
+                        </Image>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="多重绑定">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Margin="8" TextWrapping="Wrap">
+                        使用MultiBinding代替Binding对象。然后使用MultiBinding.StringFormat属性定义绑定属性的排列。
+                        <LineBreak/>
+                        使用IMultiValueConverter接口，使用数组的值，数值的顺序与标记中定义它们的顺序相同。
+                    </TextBlock>
+
+                    <GroupBox Grid.Row="1" Header="字符串格式化">
+                        <TextBlock Margin="8">
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}{0}-{1}, 单价: {2:C}">
+                                    <Binding Path="ModelNumber" Mode="OneWay"/>
+                                    <Binding Path="ModelName" Mode="OneWay"/>
+                                    <Binding Path="UnitCost" Mode="OneWay"/>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </GroupBox>
+
+                    <GroupBox Grid.Row="2" Header="多值转换">
+                        <TextBlock Margin="8">
+                            <TextBlock.Text>
+                                <!--注：需设置StringFormat属性显示文本-->
+                                <MultiBinding StringFormat="{}{0}">
+                                    <Binding Path="UnitCost" Mode="OneWay"/>
+                                    <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=Window}" Path="UnitsInStock"/>
+                                    <MultiBinding.Converter>
+                                        <local:ValueInStockConverter/>
+                                    </MultiBinding.Converter>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+    
+</Window>

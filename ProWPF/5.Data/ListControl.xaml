@@ -1,0 +1,227 @@
+﻿<Window x:Class="ProWPF.Data.ListControl"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProWPF.Data"
+        xmlns:db="clr-namespace:StoreDataBase;assembly=StoreDataBase"
+        mc:Ignorable="d"
+        Title="列表控件" Height="480" Width="800">
+
+    <Window.Resources>
+        <ObjectDataProvider x:Key="Products" ObjectType="{x:Type db:StoreDB}" MethodName="GetProducts"/>
+
+        <Style x:Key="RadioButtonListStyle" TargetType="ListBox">
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Margin" Value="2"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <RadioButton Focusable="False" IsChecked="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=IsSelected, Mode=TwoWay}">
+                                        <ContentPresenter/>
+                                    </RadioButton>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="CheckBoxListStyle" TargetType="ListBox">
+            <!--将其设置为多选-->
+            <Setter Property="SelectionMode" Value="Multiple"/>
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Margin" Value="2"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <CheckBox Focusable="False" IsChecked="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=IsSelected, Mode=TwoWay}">
+                                        <ContentPresenter/>
+                                    </CheckBox>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    
+    <TabControl>
+        <TabItem Header="相关属性">
+            <DataGrid ItemsSource="{x:Static local:SomePropeties.Propeties}" Margin="8" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Width="Auto" Header="名称" Binding="{Binding Path=Name}"/>
+                    <DataGridTemplateColumn Width="*" Header="说明">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Margin="2,4" TextWrapping="Wrap" Text="{Binding Path=Description}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </TabItem>
+
+        <TabItem Header="ListBox">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <GroupBox Header="ItemContainerStyle">
+                    <ListBox ItemsSource="{Binding Source={StaticResource Products}}" Margin="8" DisplayMemberPath="ModelName">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Background" Value="LightSteelBlue"/>
+                                <Setter Property="Margin" Value="5"/>
+                                <Setter Property="Padding" Value="5"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="DarkBlue"/>
+                                        <Setter Property="Foreground" Value="White"/>
+                                        <Setter Property="BorderBrush" Value="Black"/>
+                                        <Setter Property="BorderThickness" Value="1"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ListBox.ItemContainerStyle>                        
+                    </ListBox>
+                </GroupBox>
+
+                <GroupBox Grid.Column="1" Header="RadioButtonList 单选">
+                    <ListBox Margin="8" Style="{StaticResource RadioButtonListStyle}" 
+                             ItemsSource="{Binding Source={StaticResource Products}}" DisplayMemberPath="ModelName"/>
+                </GroupBox>
+
+                <GroupBox Grid.Column="2" Header="CheckBoxList 多选">
+                    <ListBox Margin="8" Style="{StaticResource CheckBoxListStyle}" 
+                             ItemsSource="{Binding Source={StaticResource Products}}" DisplayMemberPath="ModelName"/>
+                </GroupBox>
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="交替条目样式">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Orientation="Horizontal" ButtonBase.Click="RadioAlternationCount_Click">
+                    <TextBlock Text="交替条目数：" Margin="8"/>
+                    <RadioButton VerticalContentAlignment="Center" Margin="8" Content="1"/>
+                    <RadioButton VerticalContentAlignment="Center" Margin="8" Content="2"/>
+                    <RadioButton VerticalContentAlignment="Center" Margin="8" Content="3" IsChecked="True"/>
+                </StackPanel>
+
+                <ListBox x:Name="lstboxAlternation" Grid.Row="1" Margin="8" AlternationCount="3" ItemsSource="{Binding Source={StaticResource Products}}">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Background" Value="YellowGreen"/>
+                            <Setter Property="Margin" Value="5"/>
+                            <Setter Property="Padding"  Value="5"/>
+                            <Style.Triggers>
+                                <!--AlternationIndex是附加属性，该属性是由ListBox（ItemsControl中）类定义的，所以此处需要指定其类名-->
+                                <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                                    <Setter Property="Background" Value="SkyBlue"/>
+                                </Trigger>
+                                
+                                <Trigger Property="ItemsControl.AlternationIndex" Value="2">
+                                    <Setter Property="Background" Value="LightGreen"/>
+                                </Trigger>
+
+                                <!--IsSelected优先级最高，所以将其放在最后-->
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="DarkBlue"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Setter Property="BorderBrush" Value="Black"/>
+                                    <Setter Property="BorderThickness" Value="1"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="样式选择器">
+            <ListBox Margin="8" ItemsSource="{Binding Source={StaticResource Products}}">
+                <ListBox.ItemContainerStyleSelector>
+                    <local:SingleCriteriaHighlightStyleSelector PropertyToEvaluate="CategoryName" PropertyValueToHighlight="Travel">
+                        <local:SingleCriteriaHighlightStyleSelector.DefaultStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Background" Value="LightYellow"/>
+                                <Setter Property="Padding" Value="2"/>
+                            </Style>
+                        </local:SingleCriteriaHighlightStyleSelector.DefaultStyle>
+                        <local:SingleCriteriaHighlightStyleSelector.HighlightStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Background" Value="LightSteelBlue"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                                <Setter Property="Padding" Value="2"/>
+                            </Style>
+                        </local:SingleCriteriaHighlightStyleSelector.HighlightStyle>
+                    </local:SingleCriteriaHighlightStyleSelector>
+                </ListBox.ItemContainerStyleSelector>
+            </ListBox>
+        </TabItem>
+
+        <TabItem Header="ComboBox">
+            <DockPanel LastChildFill="True">
+                <TextBlock DockPanel.Dock="Top" Margin="8" TextWrapping="Wrap">
+                    与ListBox类一样，ComboBox类是Selector类的派生类。可通过IsDropDownOpen属性设置打开或关闭下拉列表。
+                    <LineBreak/>
+                    通常，ComboBox控件显示一个只读组合框，这意味着可使用它选择一个项，但不能输入自己的内容。可通过将IsReadOnly属性设置为false
+                    并将IsEditable属性设置为true来改变这种行为。
+                    <LineBreak/>
+                    在ComboBox控件中键入内容时，WPF使用第一个匹配自动完成建议的项来填充选择框中剩余的内容，自动完成文本是可选的，因此当继续键入内容时会自动覆盖原来的文本。
+                    可通过ComboBox.IsTextSearchEnabled属性设置为false来取消这一行为。
+                    <LineBreak/>
+                    可创建全新的根本不使用SelectionBoxItemTemplate属性的ComboBox控件模板，通过硬编码选择框模板或从窗口的资源集合中检索选择框模板。
+                </TextBlock>
+
+                <Grid Margin="8">
+                    <ComboBox ItemsSource="{Binding Source={StaticResource Products}}" VerticalAlignment="Top" Grid.IsSharedSizeScope="True"
+                              IsEditable="True" IsReadOnly="False" TextSearch.TextPath="ModelName" IsTextSearchEnabled="True">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="SkyBlue" BorderThickness="1" CornerRadius="4">
+                                    <Grid Margin="8">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition SharedSizeGroup="col"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock FontWeight="Bold" Text="{Binding Path=ModelNumber}"/>
+                                        <TextBlock Grid.Row="1" Text="{Binding Path=ModelName}"/>
+                                        <Image Grid.Column="1" Grid.RowSpan="2" Stretch="None">
+                                            <Image.Source>
+                                                <Binding Path="ProductImagePath">
+                                                    <Binding.Converter>
+                                                        <local:ImagePathConverter/>
+                                                    </Binding.Converter>
+                                                </Binding>
+                                            </Image.Source>
+                                        </Image>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </Grid>
+            </DockPanel>
+        </TabItem>
+    </TabControl>
+</Window>

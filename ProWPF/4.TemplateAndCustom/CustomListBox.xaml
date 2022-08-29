@@ -1,0 +1,196 @@
+﻿<Window x:Class="ProWPF.TemplateAndCustom.CustomListBox"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProWPF.TemplateAndCustom"
+        mc:Ignorable="d"
+        Title="自定义ListBox样式" Height="450" Width="800">
+
+    <Window.Resources>
+        <LinearGradientBrush x:Key="ListBoxBackgroundBrush">
+            <GradientStop Color="LightYellow" Offset="0"/>
+            <GradientStop Color="AliceBlue" Offset="1"/>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="StandardBroderBrush">
+            <GradientStop Color="Orange" Offset="0"/>
+            <GradientStop Color="Green" Offset="1"/>
+        </LinearGradientBrush>
+
+        <SolidColorBrush x:Key="StandardBrush" Color="Green"/>
+
+        <RadialGradientBrush x:Key="PressedBrush" GradientOrigin="0.5 0.5">
+            <GradientStop Color="LightYellow" Offset="0"/>
+            <GradientStop Color="LightBlue" Offset="1"/>
+        </RadialGradientBrush>
+
+        <SolidColorBrush x:Key="GlyphBrush" Color="Coral"/>
+
+        <Style TargetType="ListBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBox">
+                        <Border x:Name="border" Background="{StaticResource ListBoxBackgroundBrush}"
+                                BorderBrush="{StaticResource StandardBroderBrush}" BorderThickness="1" CornerRadius="4" SnapsToDevicePixels="True">
+                            <ScrollViewer Focusable="False">
+                                <!--ItmesPresenter与ContentPresenter类似，属于占位元素-->
+                                <ItemsPresenter Margin="4"/>
+                            </ScrollViewer>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="ListBoxItem">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border x:Name="border" BorderThickness="1" CornerRadius="4" Margin="0">
+                            <!--ListBoxItem是内容控件，所以使用ContentPresenter作为占位元素-->
+                            <ContentPresenter Margin="4,6"/>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <EventTrigger RoutedEvent="MouseEnter">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation To="20" Duration="0:0:1" Storyboard.TargetProperty="FontSize"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="MouseLeave">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetProperty="FontSize" Duration="0:0:0.2" BeginTime="0:0:0.5"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="#7F000000"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="DarkGray"/>
+                                <Setter TargetName="border" Property="TextBlock.Foreground" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!--Track元素上面的RepeatButton对象是透明背景，使Track元素可透过它们显示-->
+        <Style x:Key="ScrollBarPageButtonStyle" TargetType="RepeatButton">
+            <Setter Property="IsTabStop" Value="False"/>
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RepeatButton">
+                        <Border Background="Transparent"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!--ScrollBar头尾两个RepeatButton-->
+        <Style x:Key="ScrollBarLineButtonStyle" TargetType="RepeatButton">
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RepeatButton">
+                        <Grid Margin="1">
+                            <Ellipse x:Name="border" StrokeThickness="1" Stroke="{StaticResource StandardBroderBrush}" Fill="{StaticResource StandardBrush}"/>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Fill" Value="{StaticResource PressedBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+                
+        </Style>
+
+        <!--ScrollBar上的滑块-->
+        <Style x:Key="ScrollBarThumbStyle" TargetType="Thumb">
+            <Setter Property="IsTabStop" Value="False"/>
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="Margin" Value="1 0 1 0"/>
+            <Setter Property="Background" Value="{StaticResource StandardBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource StandardBroderBrush}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Thumb">
+                        <Ellipse Stroke="{StaticResource StandardBroderBrush}" Fill="{StaticResource StandardBrush}"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+            
+         <!--ScrollBar的控件模板-->
+        <ControlTemplate x:Key="VerticalScrollBar" TargetType="ScrollBar">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition MaxHeight="18"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition MaxHeight="18"/>
+                </Grid.RowDefinitions>
+
+                <RepeatButton Grid.Row="0" Height="18" Style="{StaticResource ScrollBarLineButtonStyle}" Command="ScrollBar.LineUpCommand">
+                    <Path Fill="{StaticResource GlyphBrush}" Data="M 0 4 L 8 4 L 4 0 Z"/>
+                </RepeatButton>
+
+                <!--Track元素必须命名为PART_Track，使ScrollBar类能够关联到它的代码-->
+                <Track x:Name="PART_Track" Grid.Row="1" IsDirectionReversed="True" ViewportSize="0">
+                    <Track.DecreaseRepeatButton>
+                        <RepeatButton Style="{StaticResource ScrollBarPageButtonStyle}" Command="ScrollBar.PageUpCommand"/>
+                    </Track.DecreaseRepeatButton>
+                    <Track.IncreaseRepeatButton>
+                        <RepeatButton Style="{StaticResource ScrollBarPageButtonStyle}" Command="ScrollBar.PageDownCommand"/>
+                    </Track.IncreaseRepeatButton>
+                    <Track.Thumb>
+                        <Thumb Style="{StaticResource ScrollBarThumbStyle}"/>
+                    </Track.Thumb>
+                </Track>
+
+                <RepeatButton Grid.Row="2" Height="18" Style="{StaticResource ScrollBarLineButtonStyle}" Command="ScrollBar.LineDownCommand">
+                    <Path Fill="{StaticResource GlyphBrush}" Data="M 0 0 L 4 4 L 8 0 Z"/>
+                </RepeatButton>
+            </Grid>
+        </ControlTemplate>
+
+        <!--应用自定义的ScrollBar样式-->
+        <Style TargetType="ScrollBar">
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Style.Triggers>
+                <Trigger Property="Orientation" Value="Vertical">
+                    <Setter Property="Width" Value="18"/>
+                    <Setter Property="Height" Value="Auto"/>
+                    <Setter Property="Template" Value="{StaticResource VerticalScrollBar}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    
+    <Grid>
+        <ListBox Height="150" Width="400" ScrollViewer.VerticalScrollBarVisibility="Visible">
+            <ListBoxItem>One</ListBoxItem>
+            <ListBoxItem>Two</ListBoxItem>
+            <ListBoxItem>Three</ListBoxItem>
+            <ListBoxItem>Four</ListBoxItem>
+            <ListBoxItem>Five</ListBoxItem>
+            <ListBoxItem>Six</ListBoxItem>
+            <ListBoxItem>Seven</ListBoxItem>
+            <ListBoxItem>Eight</ListBoxItem>
+            <ListBoxItem>Nine</ListBoxItem>
+            <ListBoxItem>Ten</ListBoxItem>
+            <ListBoxItem>Hundred</ListBoxItem>
+            <ListBoxItem>Thousand</ListBoxItem>
+            <ListBoxItem>Million</ListBoxItem>
+        </ListBox>
+    </Grid>
+</Window>
